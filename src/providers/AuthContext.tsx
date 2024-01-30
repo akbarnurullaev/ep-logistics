@@ -12,18 +12,14 @@ export type AuthContextValue = {
   setUser: (user: User) => void;
 }
 
-const AuthContext = createContext<AuthContextValue>({
-  logout(): void {
-  }, setAuthToken(): void {
-  }, setUser(): void {
-  }, token: "", user: undefined
-});
+const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthProvider = ({ children }: Children) => {
   const [token, setToken] = useLocalStorage("token", "");
   const [user, setUser] = useLocalStorage<User | undefined>("user", undefined);
 
   const setAuthToken = (token: string) => {
+    console.log(token);
     setToken(token);
   };
 
@@ -31,7 +27,7 @@ export const AuthProvider = ({ children }: Children) => {
     setToken("");
   };
 
-  const authRequired = !(token && user);
+  const authRequired = !token;
   const value: AuthContextValue = {
     token,
     user,

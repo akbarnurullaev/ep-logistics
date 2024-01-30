@@ -57,7 +57,7 @@ function ColorSchemeToggle(props: IconButtonProps) {
 }
 
 export default function Auth() {
-  const {setAuthToken} = useAuth();
+  const auth = useAuth();
 
   return (
     <Box
@@ -115,7 +115,8 @@ export default function Auth() {
           <form
             onSubmit={(event: React.FormEvent<SignInFormElement>) => {
               event.preventDefault();
-              setAuthToken("token");
+              auth?.setAuthToken("token");
+              console.log("edwed");
               // const formElements = event.currentTarget.elements;
               // const data = {
               //   email: formElements.email.value,
