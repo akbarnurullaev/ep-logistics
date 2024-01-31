@@ -23,19 +23,21 @@ type State = {
     removeOrder: (removableOrder: Order) => void
 }
 
-const orders = Array.from({length: 40}, () => ({
+let orders = Array.from({length: 10}, () => ({
   id: `INV-${getRandomValue(100, 900)}`,
-  productType: productType[getRandomValue(0, 4)] as keyof typeof productType,
+  productType: productType[getRandomValue(0, 4)] as ProductType,
   volume: `${getRandomValue(1, 20)} tonnes`,
   clientName: names[getRandomValue(0, 4)],
   deliveryDate: new Date(new Date().valueOf() - Math.random()*(1e+12)),
   deliveryTime: new Date(new Date().valueOf() - Math.random()*(1e+12))
 }));
+orders = [...new Map(orders.map(item =>
+  [item["id"], item])).values()];
 
-export const useOrdersStore = create<State>()((set) => ({
+export const useOrdersStore = create<State>((set) => ({
   orders,
   addOrder: (newOrder) => set((state) => ({ orders: [...state.orders, {id: "", ...newOrder}] })),
   removeOrder: (removableOrder) => {
-    set(() => ({ orders: orders.filter((order) => order.id !== removableOrder.id) }));
+    set((state) => ({ orders: [...state.orders].filter((order) => order.id !== removableOrder.id) }));
   }
 }));
