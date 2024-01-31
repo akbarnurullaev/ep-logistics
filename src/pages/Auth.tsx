@@ -117,13 +117,13 @@ export default function Auth() {
               event.preventDefault();
               auth?.setAuthToken("token");
               console.log("edwed");
-              // const formElements = event.currentTarget.elements;
-              // const data = {
-              //   email: formElements.email.value,
-              //   password: formElements.password.value,
-              //   persistent: formElements.persistent.checked,
-              // };
-              // alert(JSON.stringify(data, null, 2));
+              const formElements = event.currentTarget.elements;
+              const data = {
+                email: formElements.email.value,
+                password: formElements.password.value,
+                persistent: formElements.persistent.checked,
+              };
+              alert(JSON.stringify(data, null, 2));
             }}
           >
             <FormControl required>

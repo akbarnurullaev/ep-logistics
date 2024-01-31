@@ -36,7 +36,7 @@ orders = [...new Map(orders.map(item =>
 
 export const useOrdersStore = create<State>((set) => ({
   orders,
-  addOrder: (newOrder) => set((state) => ({ orders: [...state.orders, {id: "", ...newOrder}] })),
+  addOrder: (newOrder) => set((state) => ({ orders: [...state.orders, {id: `INV-${getRandomValue(100, 900)}`, ...newOrder}] })),
   removeOrder: (removableOrder) => {
     set((state) => ({ orders: [...state.orders].filter((order) => order.id !== removableOrder.id) }));
   }
