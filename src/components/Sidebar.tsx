@@ -10,14 +10,14 @@ import SupportRoundedIcon from "@mui/icons-material/SupportRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import {closeSidebar} from "../helpers/utils.ts";
 import {useLocation, useNavigate} from "react-router-dom";
-import {usePaths} from "./Main.tsx";
+import {PathWithChildren, usePaths} from "./Main.tsx";
 import logo from "../assets/logo.png";
 import {useState} from "react";
 import {ToggleButtonGroup} from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
 import {Languages, useI18n} from "../logic/i18n.ts";
 
-const ChildrenPaths = ({path}: {path: any}) => {
+const ChildrenPaths = ({path}: {path: PathWithChildren}) => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();

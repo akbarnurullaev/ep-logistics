@@ -14,7 +14,7 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import Typography from "@mui/joy/Typography";
 import Button from "@mui/joy/Button";
 import * as React from "react";
-import {useState} from "react";
+import {ReactNode, useState} from "react";
 import {DialogContent, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import {Order, useOrdersStore} from "../logic/orders.ts";
 import {Trucks} from "../pages/Trucks.tsx";
@@ -32,6 +32,14 @@ interface FormElements extends HTMLFormControlsCollection {
 }
 interface OrderFormElement extends HTMLFormElement {
   readonly elements: FormElements;
+}
+
+export type Path = {
+    path: string, title: string, icon: ReactNode, component: ReactNode
+}
+
+export type PathWithChildren = {
+    path: string, title: string, icon: ReactNode, component?: ReactNode, children: Path[]
 }
 
 export const usePaths = () => {
