@@ -1,6 +1,5 @@
 import GlobalStyles from "@mui/joy/GlobalStyles";
 import Box from "@mui/joy/Box";
-import IconButton from "@mui/joy/IconButton";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import ListItemButton, {listItemButtonClasses} from "@mui/joy/ListItemButton";
@@ -9,17 +8,68 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import SupportRoundedIcon from "@mui/icons-material/SupportRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded";
-
-
-import ColorSchemeToggle from "./ColorSchemeToggle";
 import {closeSidebar} from "../helpers/utils.ts";
 import {useLocation, useNavigate} from "react-router-dom";
-import {paths} from "./Main.tsx";
+import {usePaths} from "./Main.tsx";
+import logo from "../assets/logo.png";
+import {useState} from "react";
+import {ToggleButtonGroup} from "@mui/joy";
+import IconButton from "@mui/joy/IconButton";
+import {Languages, useI18n} from "../logic/i18n.ts";
+
+const ChildrenPaths = ({path}: {path: any}) => {
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+    
+  return <>
+    <ListItem onClick={() => setOpen(!open)}>
+      <ListItemButton selected={pathname === path.path}>
+        {path.icon}
+        <ListItemContent>
+          <Typography level="title-sm">{path.title}</Typography>
+        </ListItemContent>
+      </ListItemButton>
+    </ListItem>
+    {open && path.children.map(({path: childPath, icon, title}) => <ListItem sx={{ ml: 2 }} key={childPath}>
+      <ListItemButton onClick={() => navigate(`${path.path}${childPath}`)} selected={pathname === `${path.path}${childPath}`}>
+        {icon}
+        <ListItemContent>
+          <Typography level="title-sm">{title}</Typography>
+        </ListItemContent>
+      </ListItemButton>
+    </ListItem>)}
+  </>;
+};
+
+const LanguagesToggles = () => {
+  const {changeLanguage} = useI18n();
+  const [value, setValue] = useState<Languages>("en");
+  return (
+    <ToggleButtonGroup
+      value={value}
+      onChange={(_, newValue) => {
+        if (newValue) {
+          setValue(newValue);
+          changeLanguage(newValue);
+        }
+      }}
+    >
+      <IconButton disabled={value === "en"} value="en">
+        en
+      </IconButton>
+      <IconButton disabled={value === "cz"} value="cz">
+        cz
+      </IconButton>
+    </ToggleButtonGroup>
+  );
+};
 
 export default function Sidebar() {
   const { pathname } = useLocation();
+  const {paths} = usePaths();
   const navigate = useNavigate();
+  const {t} = useI18n();
 
   return (
     <Sheet
@@ -73,12 +123,13 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">EP Logistics.</Typography>
-        <ColorSchemeToggle sx={{ ml: "auto" }} />
+      <Box sx={{display: "flex", gap: 1, mx: 1, alignItems: "center"}}>
+        <img
+          style={{width: "100%" }}
+          src={logo}
+          alt="Logo"
+        />
+        {/*<ColorSchemeToggle sx={{ml: "auto"}}/>*/}
       </Box>
       <Box
         sx={{
@@ -100,15 +151,16 @@ export default function Sidebar() {
             "--ListItem-radius": (theme) => theme.vars.radius.sm,
           }}
         >
-          {paths.map(({path, title, icon}) => (
-            <ListItem key={path}>
-              <ListItemButton onClick={() => navigate(path)} selected={pathname === path}>
-                {icon}
-                <ListItemContent>
-                  <Typography level="title-sm">{title}</Typography>
-                </ListItemContent>
-              </ListItemButton>
-            </ListItem>
+          {paths.map((path) => (
+            path.children ? <ChildrenPaths key={path.path} path={path}/>
+              : <ListItem key={path.path}>
+                <ListItemButton onClick={() => navigate(path.path)} selected={pathname === path.path}>
+                  {path.icon}
+                  <ListItemContent>
+                    <Typography level="title-sm">{path.title}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
           ))}
         </List>
 
@@ -123,15 +175,18 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
+            <LanguagesToggles/>
+          </ListItem>
+          <ListItem>
             <ListItemButton>
               <SupportRoundedIcon />
-              Support
+              {t("support")}
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton>
               <SettingsRoundedIcon />
-              Settings
+              {t("settings")}
             </ListItemButton>
           </ListItem>
         </List>

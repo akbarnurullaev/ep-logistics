@@ -12,8 +12,9 @@ import Typography from "@mui/joy/Typography";
 import Stack from "@mui/joy/Stack";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
 import {useAuth} from "../providers/AuthContext.tsx";
+import logo from "../assets/logo.png";
+import {useI18n} from "../logic/i18n.ts";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -57,6 +58,7 @@ function ColorSchemeToggle(props: IconButtonProps) {
 }
 
 export default function Auth() {
+  const {t} = useI18n();
   const auth = useAuth();
 
   return (
@@ -79,14 +81,7 @@ export default function Auth() {
           alignItems: "left",
           justifyContent: "space-between",
         }}
-      >
-        <Box sx={{ gap: 2, display: "flex", alignItems: "center" }}>
-          <IconButton variant="soft" color="primary" size="sm">
-            <BadgeRoundedIcon />
-          </IconButton>
-          <Typography level="title-lg">EP Logistics</Typography>
-        </Box>
-        <ColorSchemeToggle />
+      ><ColorSchemeToggle />
       </Box>
       <Box
         component="main"
@@ -111,7 +106,12 @@ export default function Auth() {
           },
         }}
       >
-        <Stack gap={4} sx={{ mt: 2 }}>
+        <Stack gap={4} sx={{mt: 2}}>
+          <img
+            style={{width: "60%", margin: "0 auto"}}
+            src={logo}
+            alt="Logo"
+          />
           <form
             onSubmit={(event: React.FormEvent<SignInFormElement>) => {
               event.preventDefault();
@@ -127,14 +127,14 @@ export default function Auth() {
             }}
           >
             <FormControl required>
-              <FormLabel>Email</FormLabel>
-              <Input type="email" name="email" />
+              <FormLabel>{t("email")}</FormLabel>
+              <Input type="email" name="email"/>
             </FormControl>
             <FormControl required>
-              <FormLabel>Password</FormLabel>
-              <Input type="password" name="password" />
+              <FormLabel>{t("password")}</FormLabel>
+              <Input type="password" name="password"/>
             </FormControl>
-            <Stack gap={4} sx={{ mt: 2 }}>
+            <Stack gap={4} sx={{mt: 2}}>
               <Box
                 sx={{
                   display: "flex",
@@ -142,19 +142,19 @@ export default function Auth() {
                   alignItems: "center",
                 }}
               >
-                <Checkbox size="sm" label="Remember me" name="persistent" />
+                <Checkbox size="sm" label="Remember me" name="persistent"/>
                 <Link level="title-sm" href="#replace-with-a-link">
-                      Forgot your password?
+                  {t("forgotYourPassword")}
                 </Link>
               </Box>
               <Button type="submit" fullWidth>
-                    Sign in
+                {t("signIn")}
               </Button>
             </Stack>
           </form>
         </Stack>
       </Box>
-      <Box component="footer" sx={{ py: 3 }}>
+      <Box component="footer" sx={{py: 3}}>
         <Typography level="body-xs" textAlign="center">
               © EP Logistics {new Date().getFullYear()}
         </Typography>

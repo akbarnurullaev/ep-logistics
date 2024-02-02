@@ -4,7 +4,6 @@ import Sidebar from "./Sidebar.tsx";
 import Box from "@mui/joy/Box";
 import {Orders} from "../pages/Orders.tsx";
 import {Planning} from "../pages/Planning.tsx";
-import {StaticData} from "../pages/StaticData.tsx";
 import {DistanceMatrix} from "../pages/DistanceMatrix.tsx";
 import {Dashboard} from "../pages/Dashboard.tsx";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
@@ -18,6 +17,10 @@ import * as React from "react";
 import {useState} from "react";
 import {DialogContent, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
 import {Order, useOrdersStore} from "../logic/orders.ts";
+import {Trucks} from "../pages/Trucks.tsx";
+import {Clients} from "../pages/Clients.tsx";
+import {DistributionCentres} from "../pages/DistributionCentres.tsx";
+import {useI18n} from "../logic/i18n.ts";
 
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -31,18 +34,58 @@ interface OrderFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-export const paths = [
-  {path: "/", title: "Dashboard", icon: <DashboardOutlinedIcon />, component:  <Dashboard />},
-  {path: "/planning", title: "Planning", icon: <AssignmentOutlinedIcon />, component: <Planning />},
-  {path: "/orders", title: "Orders", icon: <FormatListNumberedOutlinedIcon />, component: <Orders />},
-  {path: "/static-data", title: "Static Data", icon: <DataArrayOutlinedIcon/>, component: <StaticData />},
-  {path: "/distance-matrix", title: "Distance Matrix", icon: <MapOutlinedIcon />, component: <DistanceMatrix />},
-];
+export const usePaths = () => {
+  const {t} = useI18n();
+    
+  const paths = [
+    {path: "/", title: t("dashboard"), icon: <DashboardOutlinedIcon/>, component: <Dashboard/>},
+    {path: "/planning", title: t("planning"), icon: <AssignmentOutlinedIcon/>, component: <Planning/>},
+    {path: "/orders", title: t("orders"), icon: <FormatListNumberedOutlinedIcon/>, component: <Orders/>},
+    {
+      path: "/static-data", title: t("staticData"), icon: <DataArrayOutlinedIcon/>,
+      children: [
+        {path: "/trucks", title: t("trucks"), icon: <FormatListNumberedOutlinedIcon/>, component: <Trucks/>},
+        {path: "/clients", title: t("clients"), icon: <FormatListNumberedOutlinedIcon/>, component: <Clients/>},
+        {
+          path: "/distribution-centres",
+          title: t("distributionCentres"),
+          icon: <FormatListNumberedOutlinedIcon/>,
+          component: <DistributionCentres/>
+        },
+      ]
+    },
+    {path: "/distance-matrix", title: t("distanceMatrix"), icon: <MapOutlinedIcon/>, component: <DistanceMatrix/>},
+  ];
+
+  const getTitleFromPaths = (pathname: string) => {
+    for (const {path, title, children} of paths) {
+      if (path === pathname) {
+        return title;
+      }
+
+      if (children) {
+        const childPath = children.find(({path: childPath}) => `${path}${childPath}` === pathname);
+
+        if (childPath) return childPath.title;
+      }
+    }
+  };
+
+  return {
+    paths,
+    getTitleFromPaths
+  };
+};
+
+
 
 export function Main() {
+  const {t} = useI18n();
   const {pathname} = useLocation();
   const {addOrder} = useOrdersStore();
-  const title = paths.find(({path}) => path === pathname)?.title;
+  const {paths, getTitleFromPaths} = usePaths();
+
+  const title = getTitleFromPaths(pathname);
 
   const [open, setOpen] = useState(false);
 
@@ -88,12 +131,15 @@ export function Main() {
               size="lg"
               onClick={() => setOpen(true)}
             >
-              Add new order
+              {t("addNewOrder")}
             </Button>
           </Box>
           <Routes>
-            {paths.map(({path, component}) => (
-              <Route key={path} path={path} element={component}/>
+            {paths.map(({path, component, children}) => (
+              children ?
+                children.map(({path: childrenPath, component}) => (
+                  <Route key={childrenPath} path={`${path}${childrenPath}`} element={component}/>
+                )) : <Route key={path} path={path} element={component}/>
             ))}
           </Routes>
         </Box>
@@ -102,8 +148,8 @@ export function Main() {
         zIndex: 99990,
       }} open={open} onClose={() => setOpen(false)}>
         <ModalDialog>
-          <DialogTitle>Create new project</DialogTitle>
-          <DialogContent>Fill in the information of the project.</DialogContent>
+          <DialogTitle>{t("createNewProject")}</DialogTitle>
+          <DialogContent>{t("fillInTheInformationOfTheProject")}</DialogContent>
           <form
             onSubmit={(event: React.FormEvent<OrderFormElement>) => {
               event.preventDefault();
@@ -112,8 +158,8 @@ export function Main() {
                 clientName: formElements.clientName.value,
                 productType: formElements.productType.value,
                 volume: formElements.volume.value,
-                deliveryDate: new Date(formElements.deliveryDate.value),
-                deliveryTime: new Date(formElements.deliveryTime.value),
+                deliveryDate: new Date(formElements.deliveryDate.value).toDateString(),
+                deliveryTime: new Date(formElements.deliveryTime.value).toLocaleTimeString("en-US"),
               } as Omit<Order, "id">;
               addOrder(data);
               setOpen(false);
@@ -121,19 +167,19 @@ export function Main() {
           >
             <Stack spacing={2}>
               <FormControl>
-                <FormLabel>Client Name</FormLabel>
+                <FormLabel>{t("clientName")}</FormLabel>
                 <Input name="clientName" autoFocus required />
               </FormControl>
               <FormControl>
-                <FormLabel>Product type</FormLabel>
+                <FormLabel>{t("productType")}</FormLabel>
                 <Input name="productType" autoFocus required />
               </FormControl>
               <FormControl>
-                <FormLabel>Volume</FormLabel>
+                <FormLabel>{t("volume")}</FormLabel>
                 <Input name="volume" required />
               </FormControl>
               <FormControl>
-                <FormLabel>Delivery date</FormLabel>
+                <FormLabel>{t("deliveryDate")}</FormLabel>
                 <Input
                   type="date"
                   name="deliveryDate"
@@ -145,7 +191,7 @@ export function Main() {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Delivery time</FormLabel>
+                <FormLabel>{t("deliveryTime")}</FormLabel>
                 <Input
                   type="date"
                   name="deliveryTime"
@@ -157,7 +203,7 @@ export function Main() {
                 />
               </FormControl>
                 
-              <Button type="submit">Submit</Button>
+              <Button type="submit">{t("submit")}</Button>
             </Stack>
           </form>
         </ModalDialog>
