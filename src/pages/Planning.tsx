@@ -7,7 +7,7 @@ import {useI18n} from "../logic/i18n.ts";
 import {CustomDataGrid} from "../components/common/CustomDataGrid.tsx";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/joy/Box";
-import {distanceMatrix} from "./DistanceMatrix.tsx";
+import {useDistanceMatrixStore} from "../logic/distance-matrix.ts";
 
 export const Planning = () => {
   const {t} = useI18n();
@@ -85,6 +85,8 @@ const DeliveryRow = ({truck, index}:{truck: Truck, index: 1|2|3|4}) => {
   const theme = useTheme();
   const {setOrderToTruckDelivery} = useStaticDataStore();
   const {removeOrder} = useOrdersStore();
+  const {distanceMatrix} = useDistanceMatrixStore();
+
 
   const [{isOver}, drop] = useDrop(() => ({
     accept: "BOX",
@@ -100,7 +102,8 @@ const DeliveryRow = ({truck, index}:{truck: Truck, index: 1|2|3|4}) => {
 
   const deliveryTime = distanceMatrix.find((dm) => dm.name === truck[`delivery${index}`]?.clientName)?.time || "2 hours";
   const deliveryOrderInfo =
-      truck[`delivery${index}`] && `${truck[`delivery${index}`]?.id} - ${truck[`delivery${index}`]?.clientName} - ${deliveryTime}`;
+      truck[`delivery${index}`] && `${truck[`delivery${index}`]?.id} - ${truck[`delivery${index}`]?.clientName}:
+       ${deliveryTime}`;
 
   return (
     <Box
