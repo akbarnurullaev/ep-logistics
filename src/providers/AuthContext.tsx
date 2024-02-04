@@ -3,7 +3,7 @@ import useLocalStorage from "use-local-storage";
 import {Children} from "../types.ts";
 import {User} from "../api/hooks/useAuthentication.ts";
 import Auth from "../pages/Auth.tsx";
-import {useMedia} from "use-media";
+import {useMedia} from "use-media/lib/useMedia";
 import {CreateOrderMobile} from "../pages/CreateOrderMobile.tsx";
 
 export type AuthContextValue = {
