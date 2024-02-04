@@ -1,8 +1,27 @@
 import {create} from "zustand";
 import {getRandomValue} from "../helpers/utils.ts";
+import {companies} from "./data.ts";
 
-export const names = ["Alex John", "Vladimir Kriz", "Ricardo Milos", "Vlad Cohen", "Akbar Nurulloev"] as const;
-export const companyNames = ["ABC Constructions", "XYZ Builders", "DEF Infrastructure"] as const;
+export const names = [
+  "Josef Svoboda","Petr Horák",
+  "Lucie Dvořáková","Anna Svobodová", "Jana Novák",
+  "Veronika Horáková","Marie Svobodová","Tomáš Procházková",
+  "Petr Němec", "Lucie Černá","Tomáš Procházková",
+  "Michaela Horáková","Miroslav Dvořák","Josef Kučerová",
+  "Marie Němcová","Jana Veselá","Jana Procházka",
+  "Miroslav Procházková", "Jana Nováková","Veronika Dvořák",
+  "Jana Dvořák","Tomáš Horák","Petr Novotný",
+  "Jiří Novotný", "Miroslav Horáková","Jiří Horák",
+  "Pavel Svoboda","Jaroslav Svobodová", "Martin Veselá",
+  "Jiří Veselý","Lucie Svoboda","Jana Němec",
+  "Jiří Němcová", "Lenka Procházková","Pavel Černá",
+  "Marie Němcová","Josef Dvořák", "Marie Kučerová",
+  "Anna Dvořáková", "Jan Novák","Miroslav Novotná",
+  "Pavel Novák","Pavel Novotná","Jan Horáková",
+  "Lucie Novák","František Dvořák", "Josef Kučerová",
+  "Veronika Němec", "Petra Novotná","Eva Černý",
+  ""
+] as const;
 export const products = [
   "Cement",
   " Fly Ash",
@@ -27,7 +46,6 @@ export const products = [
 ] as const;
 
 export type ProductType = keyof typeof products
-export type CompanyName = keyof typeof companyNames
 
 export interface Order {
     id: string
@@ -42,6 +60,7 @@ type State = {
     orders: Order[]
     addOrder: (order: Omit<Order, "id">) => void
     removeOrder: (removableOrder: Order) => void
+    updateOrders: (newOrders: Order[]) => void
 }
 
 export const nextDayOrders = (orders: Order[]) => orders.filter((order) => new Date(order.deliveryDate) > new Date());
@@ -56,21 +75,35 @@ export function getRandomDate() {
   return new Date(startDate.getTime() + randomTime);
 }
 
-let orders = Array.from({length: 10}, () => ({
+let orders = Array.from({length: 50}, () => ({
   id: `ORD-${getRandomValue(0, 99999)}`,
   productType: products[getRandomValue(0, products.length)] as ProductType,
   volume: `${getRandomValue(1, 20)} tonnes`,
-  clientName: names[getRandomValue(0, 4)],
+  clientName: companies[getRandomValue(0, companies.length)].name,
   deliveryDate: getRandomDate().toDateString(),
-  deliveryTime: getRandomDate().toLocaleTimeString("en-US")
+  deliveryTime: `${String(getRandomValue(0, 24)).padStart(2, "0")}:00`
 }));
 orders = [...new Map(orders.map(item =>
   [item["id"], item])).values()];
 
+const persistedOrders = () => {
+  try {
+    const jsonpa = JSON.parse(localStorage.getItem("orders") as string);
+    return jsonpa.length ? jsonpa : [];
+  } catch (e) {
+    return [];
+  }
+};
+export const addPersistedOrder = (newOrder: Omit<Order, "id">) => {
+  const persistedOrders_ = persistedOrders();
+  localStorage.setItem("orders", JSON.stringify([...persistedOrders_, {id: `ORD-${getRandomValue(100, 900)}`, ...newOrder}]));
+};
+
 export const useOrdersStore = create<State>((set) => ({
-  orders,
+  orders: [...orders, ...persistedOrders()],
   addOrder: (newOrder) => set((state) => ({ orders: [...state.orders, {id: `ORD-${getRandomValue(100, 900)}`, ...newOrder}] })),
   removeOrder: (removableOrder) => {
     set((state) => ({ orders: [...state.orders].filter((order) => order.id !== removableOrder.id) }));
-  }
+  },
+  updateOrders: newOrders => set((state) => ({ orders: [...state.orders, ...newOrders] })),
 }));

@@ -12,8 +12,18 @@ type Translations = {
     staticData: string
     planning: string
     addNewOrder: string
-    createNewProject: string
-    fillInTheInformationOfTheProject: string
+    createNewOrder: string
+    createNewTruck: string
+    createNewClient: string
+    updateClient: string
+    delete: string
+    createNewDistributionCenter: string
+    updateDistributionCenter: string
+    updateTruck: string
+    fillInTheInformationOfTheOrder: string
+    fillInTheInformationOfTheTruck: string
+    fillInTheInformationOfTheClient: string
+    fillInTheInformationOfTheDistributionCenter: string
     clientName: string
     productType: string
     volume: string
@@ -26,11 +36,14 @@ type Translations = {
     signIn: string
     id: string
     companyName: string
+    distance: string
+    time: string
     goods: string
     location: string
     search: string
     registrationNumber: string
     maxLoad: string
+    types: string
     type: string
     availableTrucks: string
     delivery: string
@@ -44,6 +57,7 @@ type Translations = {
     unallocatedOrdersForNextDay: string
     totalKilometersPlannedForNextDay: string
     trucks: string
+    addData: string
     clients: string
     distributionCentres: string
     distanceMatrix: string
@@ -53,6 +67,8 @@ type Translations = {
     ordersForTomorrow: string
     allOrders: string
     driverName: string
+    allocatedDepot: string
+    lastSeen: string
 }
 
 const useI18nStore = create<State>((set) => ({
@@ -75,14 +91,24 @@ export const useI18n = () => {
 const dictionary: Record<Languages, Translations> = {
   en: {
     dashboard: "Dashboard",
+    addData: "Add data",
+    types: "Types",
     settings: "Settings",
     planning: "Planning",
     staticData: "Static Data",
     addNewOrder: "Add new order",
-    createNewProject: "Create new project",
-    fillInTheInformationOfTheProject: "Fill in the information of the project.",
+    createNewOrder: "Create new order",
+    createNewTruck: "Create new truck",
+    updateTruck: "Update the truck",
+    createNewClient: "Create new client",
+    createNewDistributionCenter: "Create new distribution center",
+    updateDistributionCenter: "Update the distribution center",
+    fillInTheInformationOfTheOrder: "Fill in the information of the order.",
+    fillInTheInformationOfTheTruck: "Fill in the information of the truck.",
+    fillInTheInformationOfTheClient: "Fill in the information of the client.",
+    fillInTheInformationOfTheDistributionCenter: "Fill in the information of the distribution center.",
     clientName: "Client name",
-    productType: "Product type",
+    productType: "Product",
     volume: "Volume",
     deliveryDate: "Delivery date",
     deliveryTime: "Delivery time (±1 hour)",
@@ -120,13 +146,26 @@ const dictionary: Record<Languages, Translations> = {
     ordersForTomorrow: "Next day orders",
     allOrders: "All orders",
     driverName: "Driver name",
+    allocatedDepot: "Allocated depot",
+    updateClient: "Update the client",
+    delete: "Delete",
+    lastSeen: "Last seen",
+    distance: "Distance",
+    time: "Time",
   },
   cz: {
     dashboard: "Nástěnka",
     settings: "Nastavení",
+    types: "Types",
     addNewOrder: "Přidat novou objednávku",
-    createNewProject: "Vytvořit nový projekt",
-    fillInTheInformationOfTheProject: "Vyplňte informace o projektu.",
+    createNewOrder: "Vytvořit nový order",
+    createNewTruck: "Vytvořit nový truck",
+    createNewClient: "Vytvořit nový client",
+    createNewDistributionCenter: "Vytvořit nový distributionm center",
+    fillInTheInformationOfTheOrder: "Vyplňte informace o orderu.",
+    fillInTheInformationOfTheTruck: "Vyplňte informace o trucku.",
+    fillInTheInformationOfTheClient: "Vyplňte informace o client.",
+    fillInTheInformationOfTheDistributionCenter: "Vyplňte informace o distribution center.",
     clientName: "Jméno klienta",
     productType: "Typ produktu",
     volume: "Objem",
@@ -168,5 +207,14 @@ const dictionary: Record<Languages, Translations> = {
     ordersForTomorrow: "Next day orders",
     allOrders: "All orders",
     driverName: "Driver name",
+    allocatedDepot: "Allocated Depot",
+    addData: "",
+    updateClient: "",
+    delete: "",
+    lastSeen: "",
+    updateDistributionCenter: "",
+    updateTruck: "",
+    distance: "",
+    time: ""
   }
 };

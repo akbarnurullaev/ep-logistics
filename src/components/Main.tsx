@@ -12,27 +12,22 @@ import FormatListNumberedOutlinedIcon from "@mui/icons-material/FormatListNumber
 import DataArrayOutlinedIcon from "@mui/icons-material/DataArrayOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import Typography from "@mui/joy/Typography";
-import Button from "@mui/joy/Button";
-import * as React from "react";
-import {ReactNode, useState} from "react";
-import {DialogContent, DialogTitle, FormControl, FormLabel, Input, Modal, ModalDialog, Stack} from "@mui/joy";
-import {Order, useOrdersStore} from "../logic/orders.ts";
+import {ReactNode} from "react";
+import {Modal, ModalDialog} from "@mui/joy";
 import {Trucks} from "../pages/Trucks.tsx";
 import {Clients} from "../pages/Clients.tsx";
 import {DistributionCentres} from "../pages/DistributionCentres.tsx";
 import {useI18n} from "../logic/i18n.ts";
+import {CreateOrder} from "./forms/CreateOrder.tsx";
+import {FormType, useCrudForms} from "../logic/crud-forms.ts";
+import {CreateTruck} from "./forms/CreateTruck.tsx";
+import {CreateClient} from "./forms/CreateClient.tsx";
+import {CreateDistributionCenter} from "./forms/CreateDistributionCenter.tsx";
+import Dropdown from "@mui/joy/Dropdown";
+import MenuButton from "@mui/joy/MenuButton";
+import Menu from "@mui/joy/Menu";
+import MenuItem from "@mui/joy/MenuItem";
 
-
-interface FormElements extends HTMLFormControlsCollection {
-  productType: HTMLInputElement
-  volume: HTMLInputElement
-  clientName: HTMLInputElement
-  deliveryDate: HTMLInputElement
-  deliveryTime: HTMLInputElement
-}
-interface OrderFormElement extends HTMLFormElement {
-  readonly elements: FormElements;
-}
 
 export type Path = {
     path: string, title: string, icon: ReactNode, component: ReactNode
@@ -85,17 +80,23 @@ export const usePaths = () => {
   };
 };
 
-
+const FormsMap: Record<FormType, ReactNode> = {
+  truck: <CreateTruck/>,
+  client: <CreateClient/>,
+  distributionCenter: <CreateDistributionCenter/>,
+  order: <CreateOrder/>,
+};
 
 export function Main() {
   const {t} = useI18n();
   const {pathname} = useLocation();
-  const {addOrder} = useOrdersStore();
   const {paths, getTitleFromPaths} = usePaths();
 
   const title = getTitleFromPaths(pathname);
 
-  const [open, setOpen] = useState(false);
+  const {formType, setFormType} = useCrudForms();
+
+  const open = !!formType;
 
   return (
     <>
@@ -134,13 +135,16 @@ export function Main() {
             <Typography level="h2" component="h1">
               {title}
             </Typography>
-            <Button
-              color="primary"
-              size="lg"
-              onClick={() => setOpen(true)}
-            >
-              {t("addNewOrder")}
-            </Button>
+
+            <Dropdown>
+              <MenuButton color="primary" variant="solid" size="lg">{t("addData")}</MenuButton>
+              <Menu>
+                <MenuItem onClick={() => setFormType("order")}>{t("orders")}</MenuItem>
+                <MenuItem onClick={() => setFormType("truck")}>{t("trucks")}</MenuItem>
+                <MenuItem onClick={() => setFormType("client")}>{t("clients")}</MenuItem>
+                <MenuItem onClick={() => setFormType("distributionCenter")}>{t("distributionCentres")}</MenuItem>
+              </Menu>
+            </Dropdown>
           </Box>
           <Routes>
             {paths.map(({path, component, children}) => (
@@ -152,68 +156,12 @@ export function Main() {
           </Routes>
         </Box>
       </Box>
+
       <Modal sx={{
         zIndex: 99990,
-      }} open={open} onClose={() => setOpen(false)}>
-        <ModalDialog>
-          <DialogTitle>{t("createNewProject")}</DialogTitle>
-          <DialogContent>{t("fillInTheInformationOfTheProject")}</DialogContent>
-          <form
-            onSubmit={(event: React.FormEvent<OrderFormElement>) => {
-              event.preventDefault();
-              const formElements = event.currentTarget.elements;
-              const data = {
-                clientName: formElements.clientName.value,
-                productType: formElements.productType.value,
-                volume: formElements.volume.value,
-                deliveryDate: new Date(formElements.deliveryDate.value).toDateString(),
-                deliveryTime: new Date(formElements.deliveryTime.value).toLocaleTimeString("en-US"),
-              } as Omit<Order, "id">;
-              addOrder(data);
-              setOpen(false);
-            }}
-          >
-            <Stack spacing={2}>
-              <FormControl>
-                <FormLabel>{t("clientName")}</FormLabel>
-                <Input name="clientName" autoFocus required />
-              </FormControl>
-              <FormControl>
-                <FormLabel>{t("productType")}</FormLabel>
-                <Input name="productType" autoFocus required />
-              </FormControl>
-              <FormControl>
-                <FormLabel>{t("volume")}</FormLabel>
-                <Input name="volume" required />
-              </FormControl>
-              <FormControl>
-                <FormLabel>{t("deliveryDate")}</FormLabel>
-                <Input
-                  type="date"
-                  name="deliveryDate"
-                  slotProps={{
-                    input: {
-                      max: new Date().toISOString().split("T")[0],
-                    },
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>{t("deliveryTime")}</FormLabel>
-                <Input
-                  type="date"
-                  name="deliveryTime"
-                  slotProps={{
-                    input: {
-                      max: new Date().toISOString().split("T")[0],
-                    },
-                  }}
-                />
-              </FormControl>
-                
-              <Button type="submit">{t("submit")}</Button>
-            </Stack>
-          </form>
+      }} open={open} onClose={() => setFormType(null)}>
+        <ModalDialog sx={{width: 500}}>
+          {open && FormsMap[formType]}
         </ModalDialog>
       </Modal>
     </>
