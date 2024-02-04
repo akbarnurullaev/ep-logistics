@@ -4,7 +4,7 @@ import {Children} from "../types.ts";
 import {User} from "../api/hooks/useAuthentication.ts";
 import Auth from "../pages/Auth.tsx";
 import {CreateOrderMobile} from "../pages/CreateOrderMobile.tsx";
-import {useMedia} from "use-media";
+import {useMedia} from "react-use";
 
 export type AuthContextValue = {
   token: string;
