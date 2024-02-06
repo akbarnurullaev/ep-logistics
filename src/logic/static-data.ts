@@ -1,7 +1,8 @@
 import {create} from "zustand";
 import {getRandomValue} from "../helpers/utils.ts";
-import {names, Order, products} from "./orders.ts";
+import {clientNames, names, Order, products} from "./orders.ts";
 import {companies, locations, truckCodes} from "./data.ts";
+import {useDistanceMatrixStore} from "./distance-matrix.ts";
 
 export interface Truck {
     registrationNumber: string
@@ -10,10 +11,10 @@ export interface Truck {
     types: string
     allocatedDepot: string
     location: string
-    delivery1?: Order
-    delivery2?: Order
-    delivery3?: Order
-    delivery4?: Order
+    delivery1?: string
+    delivery2?: string
+    delivery3?: string
+    delivery4?: string
 }
 
 export interface DistributionCenter {
@@ -34,7 +35,6 @@ type State = {
     trucks: Truck[]
     clients: Client[]
     distributionCenters: DistributionCenter[]
-    setOrderToTruckDelivery: (truck: Truck, order: Order, index: 1|2|3|4) => void
 
     addClient: (client: Omit<Client, "id" >) => void
     updateClient: (client: Client) => void
@@ -43,6 +43,7 @@ type State = {
     addTruck: (truck: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4" | "registrationNumber">) => void
     updateTruck: (truck: Truck) => void
     deleteTruck: (truck: Truck) => void
+    setOrderToTruckDelivery: (truck: Truck, order: Order, index: 1|2|3|4) => void
 
     addDistributionCenter: (distributionCenter: Omit<DistributionCenter, "id" >) => void
     updateDistributionCenter: (distributionCenter: DistributionCenter) => void
@@ -83,7 +84,7 @@ let distributionCenters: DistributionCenter[] = Array.from({length: 5}, () => {
   const location = locations[getRandomValue(0, locations.length)];
   return {
     id: `DC-${getRandomValue(0, 999)}`,
-    name: names[getRandomValue(0, names.length)],
+    name: clientNames[getRandomValue(0, clientNames.length)],
     goods: getRandomGoods(),
     location: location.name
   };
@@ -91,50 +92,55 @@ let distributionCenters: DistributionCenter[] = Array.from({length: 5}, () => {
 distributionCenters = [...new Map(distributionCenters.map(item =>
   [item["id"], item])).values()];
 
-export const useStaticDataStore = create<State>((set) => ({
-  trucks,
-  clients,
-  distributionCenters,
-  setOrderToTruckDelivery: (truck, order, index) => {
-    set((state) => {
-      const trucks = [...state.trucks];
-      const foundTruck = trucks.find((truck_) => truck_.registrationNumber === truck.registrationNumber);
+export const useStaticDataStore = () => {
+  const {distanceMatrix} = useDistanceMatrixStore();
+  return create<State>((set) => ({
+    trucks,
+    clients,
+    distributionCenters,
+    setOrderToTruckDelivery: (truck, order, index) => {
+      set((state) => {
+        const trucks = [...state.trucks];
+        const foundTruck = trucks.find((truck_) => truck_.registrationNumber === truck.registrationNumber);
 
-      foundTruck![`delivery${index}`] = order;
+        const deliveryTime = distanceMatrix.find((dm) => dm.name === order.clientName)?.time || "2 hours";
+
+        foundTruck![`delivery${index}`] = `${order.id} - ${order.clientName}: ${deliveryTime}`;
+
+        return {trucks};
+      });
+    },
+    addClient: (newClient) => set((state) => ({clients: [...state.clients, {id: `CL-${getRandomValue(100, 900)}`, ...newClient}]})),
+    deleteClient: (deletedClient) => set((state) => ({clients: state.clients.filter((client) => client.id !== deletedClient.id)})),
+    updateClient: (updatedClient) => set((state) => {
+      const foundClientIndex = state.clients.findIndex((client) => client.id === updatedClient.id);
+      const clients = [...state.clients];
+
+      clients[foundClientIndex] = {...clients[foundClientIndex], ...updatedClient};
+
+      return {clients};
+    }),
+
+    addTruck: (newTruck) => set((state) => ({trucks: [...state.trucks, {registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)], ...newTruck}]})),
+    deleteTruck: (deletedTruck) => set((state) => ({trucks: state.trucks.filter((truck) => truck.registrationNumber !== deletedTruck.registrationNumber)})),
+    updateTruck: (updatedTruck) => set((state) => {
+      const foundTruckIndex = state.trucks.findIndex((truck) => truck.registrationNumber === updatedTruck.registrationNumber);
+      const trucks = [...state.trucks];
+
+      trucks[foundTruckIndex] = {...trucks[foundTruckIndex], ...updatedTruck};
 
       return {trucks};
-    });
-  },
-  addClient: (newClient) => set((state) => ({ clients: [...state.clients, {id: `CL-${getRandomValue(100, 900)}`, ...newClient}] })),
-  deleteClient: (deletedClient) => set((state) => ({ clients: state.clients.filter((client) => client.id !== deletedClient.id) })),
-  updateClient: (updatedClient) => set((state) => {
-    const foundClientIndex = state.clients.findIndex((client) => client.id === updatedClient.id);
-    const clients = [...state.clients];
-
-    clients[foundClientIndex] = {...clients[foundClientIndex], ...updatedClient};
-
-    return { clients };
-  }),
-
-  addTruck: (newTruck) => set((state) => ({ trucks: [...state.trucks, {registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)], ...newTruck}] })),
-  deleteTruck: (deletedTruck) => set((state) => ({ trucks: state.trucks.filter((truck) => truck.registrationNumber !== deletedTruck.registrationNumber) })),
-  updateTruck: (updatedTruck) => set((state) => {
-    const foundTruckIndex = state.trucks.findIndex((truck) => truck.registrationNumber === updatedTruck.registrationNumber);
-    const trucks = [...state.trucks];
-
-    trucks[foundTruckIndex] = {...trucks[foundTruckIndex], ...updatedTruck};
-
-    return { trucks };
-  }),
+    }),
 
 
-  addDistributionCenter: (newDistributionCenter) => set((state) => ({ distributionCenters: [...state.distributionCenters, {id: `DC-${getRandomValue(100, 900)}`, ...newDistributionCenter}] })),
-  deleteDistributionCenter: (deletedDistributionCenter) => set((state) => ({ distributionCenters: state.distributionCenters.filter((distributionCenter) => distributionCenter.id !== deletedDistributionCenter.id) })),
-  updateDistributionCenter: (updatedDistributionCenter) => set((state) => {
-    const foundDistributionCenterIndex = state.distributionCenters.findIndex((distributionCenter) => distributionCenter.id === updatedDistributionCenter.id);
-    const distributionCenters = [...state.distributionCenters];
-    distributionCenters[foundDistributionCenterIndex] = {...distributionCenters[foundDistributionCenterIndex], ...updatedDistributionCenter};
+    addDistributionCenter: (newDistributionCenter) => set((state) => ({distributionCenters: [...state.distributionCenters, {id: `DC-${getRandomValue(100, 900)}`, ...newDistributionCenter}]})),
+    deleteDistributionCenter: (deletedDistributionCenter) => set((state) => ({distributionCenters: state.distributionCenters.filter((distributionCenter) => distributionCenter.id !== deletedDistributionCenter.id)})),
+    updateDistributionCenter: (updatedDistributionCenter) => set((state) => {
+      const foundDistributionCenterIndex = state.distributionCenters.findIndex((distributionCenter) => distributionCenter.id === updatedDistributionCenter.id);
+      const distributionCenters = [...state.distributionCenters];
+      distributionCenters[foundDistributionCenterIndex] = {...distributionCenters[foundDistributionCenterIndex], ...updatedDistributionCenter};
 
-    return { distributionCenters };
-  }),
-}));
+      return {distributionCenters};
+    }),
+  }))();
+};

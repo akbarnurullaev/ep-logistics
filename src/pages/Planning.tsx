@@ -7,7 +7,6 @@ import {useI18n} from "../logic/i18n.ts";
 import {CustomDataGrid} from "../components/common/CustomDataGrid.tsx";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/joy/Box";
-import {useDistanceMatrixStore} from "../logic/distance-matrix.ts";
 
 export const Planning = () => {
   const {t} = useI18n();
@@ -29,7 +28,7 @@ export const Planning = () => {
             {headerName: t("type"), field: "type", valueGetter: ({row}) => row.types, flex: 1},
             {headerName: t("driverName"), field: "driverName", valueGetter: ({row}) => row.driverName, flex: 1},
             {headerName: t("allocatedDepot"), field: "allocatedDepot", valueGetter: ({row}) => row.allocatedDepot, flex: 1},
-            {headerName: t("location"), field: "location", valueGetter: ({row}) => row.location, flex: 1},
+            {headerName: t("lastSeen"), field: "location", valueGetter: ({row}) => row.location, flex: 1},
             {headerName: `${t("delivery")} 1`, field: "delivery1", renderCell: ({row}) => <DeliveryRow truck={row} index={1}/>, flex: 1.5},
             {headerName: `${t("delivery")} 2`, field: "delivery2", renderCell: ({row}) => <DeliveryRow truck={row} index={2}/>, flex: 1.5},
             {headerName: `${t("delivery")} 3`, field: "delivery3", renderCell: ({row}) => <DeliveryRow truck={row} index={3}/>, flex: 1.5},
@@ -85,8 +84,6 @@ const DeliveryRow = ({truck, index}:{truck: Truck, index: 1|2|3|4}) => {
   const theme = useTheme();
   const {setOrderToTruckDelivery} = useStaticDataStore();
   const {removeOrder} = useOrdersStore();
-  const {distanceMatrix} = useDistanceMatrixStore();
-
 
   const [{isOver}, drop] = useDrop(() => ({
     accept: "BOX",
@@ -100,10 +97,7 @@ const DeliveryRow = ({truck, index}:{truck: Truck, index: 1|2|3|4}) => {
     },
   }));
 
-  const deliveryTime = distanceMatrix.find((dm) => dm.name === truck[`delivery${index}`]?.clientName)?.time || "2 hours";
-  const deliveryOrderInfo =
-      truck[`delivery${index}`] && `${truck[`delivery${index}`]?.id} - ${truck[`delivery${index}`]?.clientName}:
-       ${deliveryTime}`;
+  const deliveryOrderInfo = truck[`delivery${index}`];
 
   return (
     <Box

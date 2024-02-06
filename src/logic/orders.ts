@@ -22,7 +22,7 @@ export const names = [
   "Veronika Němec", "Petra Novotná","Eva Černý",
   ""
 ] as const;
-const clientNames  = [
+export const clientNames  = [
   "Stavební Podnik Praha",
   "Betonové Řešení s.r.o.",
   "Zelená Pole Agro a.s.",
