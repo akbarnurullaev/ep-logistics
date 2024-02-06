@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import {getRandomValue} from "../helpers/utils.ts";
-import {clientNames, names, Order, products} from "./orders.ts";
+import {names, Order, products} from "./orders.ts";
 import {companies, locations, truckCodes} from "./data.ts";
 import {useDistanceMatrixStore} from "./distance-matrix.ts";
 
@@ -40,7 +40,7 @@ type State = {
     updateClient: (client: Client) => void
     deleteClient: (client: Client) => void
 
-    addTruck: (truck: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4" | "registrationNumber">) => void
+    addTruck: (truck: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4">) => void
     updateTruck: (truck: Truck) => void
     deleteTruck: (truck: Truck) => void
     setOrderToTruckDelivery: (truck: Truck, order: Order, index: 1|2|3|4) => void
@@ -84,9 +84,9 @@ let distributionCenters: DistributionCenter[] = Array.from({length: 5}, () => {
   const location = locations[getRandomValue(0, locations.length)];
   return {
     id: `DC-${getRandomValue(0, 999)}`,
-    name: clientNames[getRandomValue(0, clientNames.length)],
+    name: location.name,
     goods: getRandomGoods(),
-    location: location.name
+    location: `${location.location.latitude}, ${location.location.longitude}`
   };
 });
 distributionCenters = [...new Map(distributionCenters.map(item =>
@@ -121,7 +121,7 @@ export const useStaticDataStore = () => {
       return {clients};
     }),
 
-    addTruck: (newTruck) => set((state) => ({trucks: [...state.trucks, {registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)], ...newTruck}]})),
+    addTruck: (newTruck) => set((state) => ({trucks: [...state.trucks, newTruck]})),
     deleteTruck: (deletedTruck) => set((state) => ({trucks: state.trucks.filter((truck) => truck.registrationNumber !== deletedTruck.registrationNumber)})),
     updateTruck: (updatedTruck) => set((state) => {
       const foundTruckIndex = state.trucks.findIndex((truck) => truck.registrationNumber === updatedTruck.registrationNumber);

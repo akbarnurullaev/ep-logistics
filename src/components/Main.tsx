@@ -23,7 +23,10 @@ import {FormType, useCrudForms} from "../logic/crud-forms.ts";
 import {CreateTruck} from "./forms/CreateTruck.tsx";
 import {CreateClient} from "./forms/CreateClient.tsx";
 import {CreateDistributionCenter} from "./forms/CreateDistributionCenter.tsx";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import Button from "@mui/joy/Button";
+import BusinessIcon from "@mui/icons-material/BusinessOutlined";
+import FactoryOutlinedIcon from "@mui/icons-material/FactoryOutlined";
 
 
 export type Path = {
@@ -39,17 +42,17 @@ export const usePaths = () => {
     
   const paths = [
     {path: "/", title: t("dashboard"), icon: <DashboardOutlinedIcon/>, component: <Dashboard/>},
-    {path: "/planning", title: t("planning"), icon: <AssignmentOutlinedIcon/>, component: <Planning/>},
-    {path: "/orders", title: t("orders"), icon: <FormatListNumberedOutlinedIcon/>, component: <Orders/>},
+    {path: "/planning", title: t("planning"), icon: <FormatListNumberedOutlinedIcon/>, component: <Planning/>},
+    {path: "/orders", title: t("orders"), icon: <AssignmentOutlinedIcon/>, component: <Orders/>},
     {
       path: "/static-data", title: t("staticData"), icon: <DataArrayOutlinedIcon/>,
       children: [
-        {path: "/trucks", title: t("trucks"), icon: <FormatListNumberedOutlinedIcon/>, component: <Trucks/>},
-        {path: "/clients", title: t("clients"), icon: <FormatListNumberedOutlinedIcon/>, component: <Clients/>},
+        {path: "/trucks", title: t("trucks"), icon: <LocalShippingIcon/>, component: <Trucks/>},
+        {path: "/clients", title: t("clients"), icon: <BusinessIcon/>, component: <Clients/>},
         {
           path: "/distribution-centres",
           title: t("distributionCentres"),
-          icon: <FormatListNumberedOutlinedIcon/>,
+          icon: <FactoryOutlinedIcon/>,
           component: <DistributionCentres/>
         },
       ]

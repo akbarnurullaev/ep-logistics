@@ -4,14 +4,14 @@ import Box from "@mui/joy/Box";
 import {useI18n} from "../logic/i18n.ts";
 
 export const Dashboard = () => {
-  const {t} = useI18n();
+  const {t, language} = useI18n();
 
   const data = [
-    {heading: t("totalActiveOrders"), title: "63", subtitle: "+5.2% from yesterday"},
-    {heading: t("activeOrdersForNextDay"), title: "45", subtitle: "+3.5% from yesterday"},
-    {heading: t("activeVehiclesAvailable"), title: "124", subtitle: "+0,7% from yesterday"},
+    {heading: t("totalActiveOrders"), title: "63", subtitle: language === "en" ? "+5.2% from yesterday" : "+5.2% ve srovnání s včerejškem"},
+    {heading: t("activeOrdersForNextDay"), title: "45", subtitle: language === "en" ? "+3.5% from yesterday" : "+3.5% ve srovnání s včerejškem"},
+    {heading: t("activeVehiclesAvailable"), title: "124", subtitle: language === "en" ? "+0,7% from yesterday" : "+0,7% ve srovnání s včerejškem"},
     {heading: t("ordersAllocatedToDrivers"), title: "23%", subtitle: ""},
-    {heading: t("unallocatedOrdersForNextDay"), title: "31", subtitle: "77% to finish plan"},
+    {heading: t("unallocatedOrdersForNextDay"), title: "31", subtitle: language === "en" ? "77% to finish plan" : "77% do dokončeni plánu"},
     {heading: t("totalKilometersPlannedForNextDay"), title: "9438 km", subtitle: ""},
   ];
 

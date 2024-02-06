@@ -12,10 +12,11 @@ import Button from "@mui/joy/Button";
 import Typography from "@mui/joy/Typography";
 import ColorSchemeToggle from "../components/ColorSchemeToggle.tsx";
 import {useI18n} from "../logic/i18n.ts";
-import {Autocomplete, DialogContent, DialogTitle} from "@mui/joy";
+import {Alert, Autocomplete, DialogContent, DialogTitle} from "@mui/joy";
 import {addPersistedOrder, Order} from "../logic/orders.ts";
 import {companies} from "../logic/data.ts";
 import {dateFormatter} from "../helpers/dateFormatter.ts";
+import PlaylistAddCheckCircleRoundedIcon from "@mui/icons-material/PlaylistAddCheckCircleRounded";
 
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -40,8 +41,27 @@ interface OrderFormElement extends HTMLFormElement {
 
 
 export const CreateOrderMobile = () => {
-  const {t} = useI18n();
+  const {t, language} = useI18n();
   const [showCreateOrder, setShowCreateOrder] = useState(false);
+  const [successful, setSuccessful] = useState(false);
+
+  if (successful) {
+    return (
+      <Alert
+        sx={{ m: 2 }}
+        variant="soft"
+        color="success"
+        startDecorator={<PlaylistAddCheckCircleRoundedIcon />}
+        // endDecorator={
+        //   <Button size="sm" variant="solid" color="success">
+        //     Close
+        //   </Button>
+        // }
+      >
+        {language === "en" ? "Your order was created successfully." : "Objednávka byla úspěšně vytvořena."}
+      </Alert>
+    );
+  }
 
   if (showCreateOrder) {
     return <Box sx={{ p: 2 }}>
@@ -59,6 +79,7 @@ export const CreateOrderMobile = () => {
             deliveryTime: formElements.deliveryTime.value,
           } as Omit<Order, "id">;
           addPersistedOrder(data);
+          setSuccessful(true);
         }}
       >
         <Stack sx={{ mt: 2 }} spacing={2}>
@@ -90,11 +111,6 @@ export const CreateOrderMobile = () => {
             <Input
               type="date"
               name="deliveryDate"
-              slotProps={{
-                input: {
-                  max: new Date().toISOString().split("T")[0],
-                },
-              }}
             />
           </FormControl>
           <FormControl>

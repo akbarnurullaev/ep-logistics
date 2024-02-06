@@ -41,7 +41,8 @@ export const CreateTruck = () => {
         onSubmit={(event: React.FormEvent<TruckFormElement>) => {
           event.preventDefault();
           const formElements = event.currentTarget.elements;
-          const data: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4" | "registrationNumber"> = {
+          const data: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4"> = {
+            registrationNumber: formElements.registrationNumber.value,
             driverName: formElements.driverName.value,
             maxLoad: formElements.maxLoad.value,
             types: formElements.types.value,
@@ -57,6 +58,10 @@ export const CreateTruck = () => {
         }}
       >
         <Stack spacing={2}>
+          <FormControl>
+            <FormLabel>{t("registrationNumber")}</FormLabel>
+            <Input name="registrationNumber" defaultValue={selectedTruck?.registrationNumber} autoFocus required />
+          </FormControl>
           <FormControl>
             <FormLabel>{t("driverName")}</FormLabel>
             <Input name="driverName" defaultValue={selectedTruck?.driverName} autoFocus required />

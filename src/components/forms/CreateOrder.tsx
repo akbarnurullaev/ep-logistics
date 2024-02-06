@@ -1,6 +1,6 @@
 import React from "react";
 import {Autocomplete, DialogContent, DialogTitle, FormControl, FormLabel, Input, Stack} from "@mui/joy";
-import {Order, useOrdersStore} from "../../logic/orders.ts";
+import {Order, products, useOrdersStore} from "../../logic/orders.ts";
 import {companies} from "../../logic/data.ts";
 import Button from "@mui/joy/Button";
 import {useI18n} from "../../logic/i18n.ts";
@@ -20,14 +20,16 @@ interface OrderFormElement extends HTMLFormElement {
 
 export const CreateOrder = () => {
   const {t} = useI18n();
-  const {addOrder} = useOrdersStore();
-  const {setFormType, selectedData} = useCrudForms();
+  const {addOrder, updateOrder, removeOrder} = useOrdersStore();
+  const {setFormType, selectedData, setSelectedData} = useCrudForms();
 
   const order = selectedData as Order;
+  const isEditing = !!selectedData;
+
 
   return (
     <>
-      <DialogTitle>{t("createNewOrder")}</DialogTitle>
+      <DialogTitle>{t(isEditing ? "updateOrder" : "createNewOrder")}</DialogTitle>
       <DialogContent>{t("fillInTheInformationOfTheOrder")}</DialogContent>
       <form
         onSubmit={(event: React.FormEvent<OrderFormElement>) => {
@@ -40,7 +42,11 @@ export const CreateOrder = () => {
             deliveryDate: dateFormatter(new Date(formElements.deliveryDate.value)),
             deliveryTime: formElements.deliveryTime.value,
           } as Omit<Order, "id">;
-          addOrder(data);
+          if (isEditing) {
+            updateOrder({...order, ...data});
+          } else {
+            addOrder(data);
+          }
           setFormType(null);
         }}
       >
@@ -63,7 +69,20 @@ export const CreateOrder = () => {
           </FormControl>
           <FormControl>
             <FormLabel>{t("productType")}</FormLabel>
-            <Input name="productType" defaultValue={order?.productType as string} autoFocus required />
+            <Autocomplete
+              freeSolo
+              required
+              name="productType"
+              defaultValue={order?.productType as string}
+              options={products}
+              slotProps={{
+                listbox: {
+                  sx: {
+                    zIndex: 2147483640
+                  }
+                }
+              }}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>{t("volume")}</FormLabel>
@@ -93,6 +112,11 @@ export const CreateOrder = () => {
           </FormControl>
 
           <Button type="submit">{t("createNewOrder")}</Button>
+          {isEditing && <Button variant="plain" type="submit" onClick={() => {
+            removeOrder(order);
+            setFormType(null);
+            setSelectedData(null);
+          }}>{t("delete")}</Button>}
         </Stack>
       </form>
     </>

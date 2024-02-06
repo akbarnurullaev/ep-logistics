@@ -92,6 +92,7 @@ export interface Order {
 type State = {
     orders: Order[]
     addOrder: (order: Omit<Order, "id">) => void
+    updateOrder: (order: Order) => void
     removeOrder: (removableOrder: Order) => void
     updateOrders: (newOrders: Order[]) => void
 }
@@ -135,6 +136,14 @@ export const addPersistedOrder = (newOrder: Omit<Order, "id">) => {
 export const useOrdersStore = create<State>((set) => ({
   orders: [...orders, ...persistedOrders()],
   addOrder: (newOrder) => set((state) => ({ orders: [...state.orders, {id: `ORD-${getRandomValue(100, 900)}`, ...newOrder}] })),
+  updateOrder: (updatedOrder) => set((state) => {
+    const foundOrderIndex = state.orders.findIndex((order) => order.id === updatedOrder.id);
+    const orders = [...state.orders];
+
+    orders[foundOrderIndex] = {...orders[foundOrderIndex], ...updatedOrder};
+
+    return {orders};
+  }),
   removeOrder: (removableOrder) => {
     set((state) => ({ orders: [...state.orders].filter((order) => order.id !== removableOrder.id) }));
   },

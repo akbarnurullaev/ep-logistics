@@ -1,7 +1,7 @@
 import {create} from "zustand";
-import {companies} from "./data.ts";
 import {getRandomValue} from "../helpers/utils.ts";
 import {useI18n} from "./i18n.ts";
+import {clientNames} from "./orders.ts";
 
 export const names = [
   "Josef Svoboda","Petr Horák",
@@ -61,11 +61,11 @@ type State = {
 
 export const useDistanceMatrixStore = () => {
   const {t} = useI18n();
-  const distanceMatrix = companies.map((company) => {
+  const distanceMatrix = clientNames.map((company) => {
     const distance = getRandomValue(132, 954);
     return {
-      id: company.name,
-      name: company.name,
+      id: company,
+      name: company,
       time: `${Math.round(distance/70)} ${t("hours")}/${Math.round(((distance % 70) / 70) * 60)} ${t("minutes")}`,
       distance: `${distance} km`,
     };

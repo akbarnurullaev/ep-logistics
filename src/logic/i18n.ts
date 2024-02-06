@@ -13,6 +13,7 @@ export type Translations = {
     planning: string
     addNewOrder: string
     createNewOrder: string
+    updateOrder: string
     createNewTruck: string
     createNewClient: string
     updateClient: string
@@ -89,7 +90,7 @@ export const useI18n = () => {
     return translations[key];
   };
 
-  return {t, changeLanguage};
+  return {t, changeLanguage, language};
 };
 
 const dictionary: Record<Languages, Translations> = {
@@ -102,6 +103,7 @@ const dictionary: Record<Languages, Translations> = {
     staticData: "Static Data",
     addNewOrder: "Add new order",
     createNewOrder: "Create new order",
+    updateOrder: "Update order",
     createNewTruck: "Create new truck",
     updateTruck: "Update the truck",
     createNewClient: "Create new client",
@@ -226,7 +228,8 @@ const dictionary: Record<Languages, Translations> = {
     time: "Čas",
     hours: "hodin",
     minutes: "minut",
-    rememberMe: "",
-    download: "",
+    rememberMe: "Zapamatuj si mě",
+    download: "Stáhnout",
+    updateOrder: "Aktualizovat objednávku",
   }
 };
