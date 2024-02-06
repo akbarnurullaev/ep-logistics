@@ -53,17 +53,17 @@ export const CreateDistributionCenter = () => {
         <Stack spacing={2}>
           <FormControl>
             <FormLabel>{t("name")}</FormLabel>
-            <Input name="name" defaultValue={selectedDistributionCenter.name} autoFocus required />
+            <Input name="name" defaultValue={selectedDistributionCenter?.name} autoFocus required />
           </FormControl>
 
           <FormControl>
             <FormLabel>{t("goods")}</FormLabel>
-            <Input name="goods" defaultValue={selectedDistributionCenter.goods} required />
+            <Input name="goods" defaultValue={selectedDistributionCenter?.goods} required />
           </FormControl>
 
           <FormControl>
             <FormLabel>{t("location")}</FormLabel>
-            <Input name="location" defaultValue={selectedDistributionCenter.location} required />
+            <Input name="location" defaultValue={selectedDistributionCenter?.location} required />
           </FormControl>
 
           <Button type="submit">{text.submitButton}</Button>

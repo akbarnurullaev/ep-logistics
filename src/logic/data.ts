@@ -1,4 +1,4 @@
-export const companies = [
+export const locations = [
   { name: "TransLogist Centrum Praha (CZ)", location: { latitude: 49.2607, longitude: 15.5495 } },
   { name: "Kamionový Přístav Brno (CZ)", location: { latitude: 49.5095, longitude: 15.5625 } },
   { name: "Cargo Hub Ostrava (CZ)", location: { latitude: 49.3784, longitude: 17.3899 } },
@@ -20,7 +20,7 @@ export const companies = [
   { name: "Východočeské Přepravní Centrum (CZ)", location: { latitude: 49.4748, longitude: 14.0829 } },
   { name: "Prešovský Kamionový Přístav (SK)", location: { latitude: 48.637, longitude: 17.7269 } }
 ];
-export const locations = [
+export const companies = [
   { name: "Materiálové Centrum Praha (CZ)", location: { latitude: 50.5258, longitude: 17.7184 } },
   { name: "Stavební Zásobování Bratislava (SK)", location: { latitude: 49.2101, longitude: 17.6231 } },
   { name: "Betonárna Ostrava (CZ)", location: { latitude: 49.358, longitude: 13.9886 } },
@@ -41,4 +41,56 @@ export const locations = [
   { name: "EkoMateriály Banská Bystrica (SK)", location: { latitude: 48.644, longitude: 22.3974 } },
   { name: "Stavební Mixy Liberec (CZ)", location: { latitude: 48.8711, longitude: 14.1604 } },
   { name: "Průmyslové Dodávky Martin (SK)", location: { latitude: 48.0556, longitude: 18.5053 } }
+];
+export const truckCodes = [
+  "MUK 4590",
+  "ZSJ 5044",
+  "BLT 7273",
+  "TSU 3078",
+  "PLK 1314",
+  "EJI 4642",
+  "CDY 6522",
+  "ECZ 0272",
+  "JCT 8855",
+  "SXX 0522",
+  "PMM 3860",
+  "HMP 3516",
+  "KUZ 7911",
+  "SZI 0251",
+  "HAR 1346",
+  "TTY 6897",
+  "BSL 0600",
+  "PMP 0103",
+  "AUE 1555",
+  "TNH 1500",
+  "CUV 9034",
+  "UZK 5896",
+  "HYH 5236",
+  "TIN 2648",
+  "PNL 0303",
+  "BBP 0641",
+  "CJL 9130",
+  "JPR 4466",
+  "PJE 2146",
+  "PXD 2796",
+  "ZZF 0326",
+  "UMM 9551",
+  "CCJ 0622",
+  "AXM 5746",
+  "EVD 3356",
+  "USK 4007",
+  "SVM 6729",
+  "CYU 8048",
+  "JPE 1210",
+  "JPH 6098",
+  "HSB 1012",
+  "AXX 5821",
+  "MHB 5365",
+  "ZEB 3226",
+  "TDX 1282",
+  "KVZ 1367",
+  "TZF 6657",
+  "UCB 4621",
+  "MAS 5299",
+  "ZLS 4374"
 ];

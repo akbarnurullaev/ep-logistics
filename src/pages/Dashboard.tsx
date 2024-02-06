@@ -7,12 +7,12 @@ export const Dashboard = () => {
   const {t} = useI18n();
 
   const data = [
-    {heading: t("totalActiveOrders"), title: "+2350", subtitle: "+180.1% from last month"},
-    {heading: t("activeOrdersForNextDay"), title: "+1234", subtitle: "+19% from last month"},
-    {heading: t("activeVehiclesAvailable"), title: "+573", subtitle: "+201 since last hour"},
-    {heading: t("ordersAllocatedToDrivers"), title: "80%", subtitle: "+5% from last month"},
-    {heading: t("unallocatedOrdersForNextDay"), title: "+150", subtitle: "+10% from last month"},
-    {heading: t("totalKilometersPlannedForNextDay"), title: "+1234 km", subtitle: "+19% from last month"},
+    {heading: t("totalActiveOrders"), title: "63", subtitle: "+5.2% from yesterday"},
+    {heading: t("activeOrdersForNextDay"), title: "45", subtitle: "+3.5% from yesterday"},
+    {heading: t("activeVehiclesAvailable"), title: "124", subtitle: "+0,7% from yesterday"},
+    {heading: t("ordersAllocatedToDrivers"), title: "23%", subtitle: ""},
+    {heading: t("unallocatedOrdersForNextDay"), title: "31", subtitle: "77% to finish plan"},
+    {heading: t("totalKilometersPlannedForNextDay"), title: "9438 km", subtitle: ""},
   ];
 
 
@@ -20,10 +20,10 @@ export const Dashboard = () => {
     <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "space-between", width: "100%" }}>
       {data.map(({heading, title,subtitle}) => (
         <Card key={heading} variant="outlined" sx={{flexBasis: {xl: "calc(33% - 8px)", lg: "calc(50% - 8px)", md: "calc(50% - 8px)", sm: "calc(50% - 8px)", xs: "100%"} }}>
-          <CardContent>
+          <CardContent sx={{ display:"flex", justifyContent: "space-between", flexDirection: "column" }}>
             <Typography level="title-md">{heading}</Typography>
-            <Typography mt={2} level="h2">{title}</Typography>
-            <Typography textColor="text.tertiary">{subtitle}</Typography>
+            <Typography level="h2">{title}</Typography>
+            {subtitle && <Typography textColor="text.tertiary">{subtitle}</Typography>}
           </CardContent>
         </Card>
       ))}

@@ -15,6 +15,7 @@ import {useI18n} from "../logic/i18n.ts";
 import {Autocomplete, DialogContent, DialogTitle} from "@mui/joy";
 import {addPersistedOrder, Order} from "../logic/orders.ts";
 import {companies} from "../logic/data.ts";
+import {dateFormatter} from "../helpers/dateFormatter.ts";
 
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -53,8 +54,8 @@ export const CreateOrderMobile = () => {
           const data = {
             clientName: formElements.clientName.value,
             productType: formElements.productType.value,
-            volume: formElements.volume.value,
-            deliveryDate: new Date(formElements.deliveryDate.value).toDateString(),
+            volume: +formElements.volume.value,
+            deliveryDate: dateFormatter(new Date(formElements.deliveryDate.value)),
             deliveryTime: formElements.deliveryTime.value,
           } as Omit<Order, "id">;
           addPersistedOrder(data);
@@ -82,7 +83,7 @@ export const CreateOrderMobile = () => {
           </FormControl>
           <FormControl>
             <FormLabel>{t("volume")}</FormLabel>
-            <Input name="volume" required />
+            <Input name="volume" type="number" required />
           </FormControl>
           <FormControl>
             <FormLabel>{t("deliveryDate")}</FormLabel>

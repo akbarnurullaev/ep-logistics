@@ -69,7 +69,7 @@ export const CustomDataGrid = <T extends GridValidRowModel, R extends string>({i
           {addOn}
 
           <Button startIcon={<FileDownloadOutlined/>} sx={{ ml: 2 }} onClick={handleClick} variant="text">
-            {t("export")}
+            {t("download")}
           </Button>
           <Menu
             id="basic-menu"

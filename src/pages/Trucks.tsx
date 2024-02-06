@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-unused-vars: 0 */
 import {useStaticDataStore} from "../logic/static-data.ts";
 import {useI18n} from "../logic/i18n.ts";
 import {CustomDataGrid} from "../components/common/CustomDataGrid.tsx";
@@ -11,7 +12,7 @@ export const Trucks = () => {
   return (
     <CustomDataGrid
       getRowId={({registrationNumber}) => registrationNumber}
-      rows={trucks}
+      rows={trucks.map(({ delivery1, delivery2, delivery3, delivery4, ...truck}) => truck)}
       onRowClick={({row: truck}) => {
         setFormType("truck");
         setSelectedData(truck);

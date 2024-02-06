@@ -17,16 +17,13 @@ import {Modal, ModalDialog} from "@mui/joy";
 import {Trucks} from "../pages/Trucks.tsx";
 import {Clients} from "../pages/Clients.tsx";
 import {DistributionCentres} from "../pages/DistributionCentres.tsx";
-import {useI18n} from "../logic/i18n.ts";
+import {Translations, useI18n} from "../logic/i18n.ts";
 import {CreateOrder} from "./forms/CreateOrder.tsx";
 import {FormType, useCrudForms} from "../logic/crud-forms.ts";
 import {CreateTruck} from "./forms/CreateTruck.tsx";
 import {CreateClient} from "./forms/CreateClient.tsx";
 import {CreateDistributionCenter} from "./forms/CreateDistributionCenter.tsx";
-import Dropdown from "@mui/joy/Dropdown";
-import MenuButton from "@mui/joy/MenuButton";
-import Menu from "@mui/joy/Menu";
-import MenuItem from "@mui/joy/MenuItem";
+import Button from "@mui/joy/Button";
 
 
 export type Path = {
@@ -87,6 +84,17 @@ const FormsMap: Record<FormType, ReactNode> = {
   order: <CreateOrder/>,
 };
 
+// TODO: type it
+const Buttons: Record<string, {title: keyof Translations, formType: FormType}> = {
+  "/": {title: "createNewOrder", formType: "order"},
+  "/orders": {title: "createNewOrder", formType: "order"},
+  "/planning": {title: "createNewDistributionCenter", formType: "distributionCenter"},
+  "/distance-matrix": {title: "createNewOrder", formType: "order"},
+  "/static-data/trucks": {title: "createNewTruck", formType: "truck"},
+  "/static-data/clients": {title: "createNewClient", formType: "client"},
+  "/static-data/distribution-centres": {title: "createNewDistributionCenter", formType: "distributionCenter"},
+};
+
 export function Main() {
   const {t} = useI18n();
   const {pathname} = useLocation();
@@ -94,7 +102,7 @@ export function Main() {
 
   const title = getTitleFromPaths(pathname);
 
-  const {formType, setFormType} = useCrudForms();
+  const {formType, setFormType, setSelectedData} = useCrudForms();
 
   const open = !!formType;
 
@@ -136,15 +144,8 @@ export function Main() {
               {title}
             </Typography>
 
-            <Dropdown>
-              <MenuButton color="primary" variant="solid" size="lg">{t("addData")}</MenuButton>
-              <Menu>
-                <MenuItem onClick={() => setFormType("order")}>{t("orders")}</MenuItem>
-                <MenuItem onClick={() => setFormType("truck")}>{t("trucks")}</MenuItem>
-                <MenuItem onClick={() => setFormType("client")}>{t("clients")}</MenuItem>
-                <MenuItem onClick={() => setFormType("distributionCenter")}>{t("distributionCentres")}</MenuItem>
-              </Menu>
-            </Dropdown>
+            {Buttons[pathname] && <Button color="primary" variant="solid" size="lg"
+              onClick={() => setFormType(Buttons[pathname].formType)}>{t(Buttons[pathname].title)}</Button>}
           </Box>
           <Routes>
             {paths.map(({path, component, children}) => (
@@ -159,7 +160,10 @@ export function Main() {
 
       <Modal sx={{
         zIndex: 99990,
-      }} open={open} onClose={() => setFormType(null)}>
+      }} open={open} onClose={() => {
+        setFormType(null);
+        setSelectedData(null);
+      }}>
         <ModalDialog sx={{width: 500}}>
           {open && FormsMap[formType]}
         </ModalDialog>

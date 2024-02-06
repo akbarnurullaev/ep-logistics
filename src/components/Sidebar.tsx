@@ -42,7 +42,7 @@ const ChildrenPaths = ({path}: {path: PathWithChildren}) => {
   </>;
 };
 
-const LanguagesToggles = () => {
+export const LanguagesToggles = () => {
   const {changeLanguage} = useI18n();
   const [value, setValue] = useState<Languages>("en");
   return (

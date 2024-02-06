@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import {getRandomValue} from "../helpers/utils.ts";
 import {names, Order, products} from "./orders.ts";
-import {companies, locations} from "./data.ts";
+import {companies, locations, truckCodes} from "./data.ts";
 
 export interface Truck {
     registrationNumber: string
@@ -56,7 +56,7 @@ const getRandomGoods = () => {
 let trucks: Truck[] = Array.from({length: 10}, () => {
   const company = companies[getRandomValue(0, companies.length)];
   return {
-    registrationNumber: `TR-${getRandomValue(100, 900)}`,
+    registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)],
     driverName: names[getRandomValue(0, names.length)],
     maxLoad: `${getRandomValue(0, 20)} tons`,
     types: getRandomGoods(),
@@ -116,7 +116,7 @@ export const useStaticDataStore = create<State>((set) => ({
     return { clients };
   }),
 
-  addTruck: (newTruck) => set((state) => ({ trucks: [...state.trucks, {registrationNumber: `TR-${getRandomValue(100, 900)}`, ...newTruck}] })),
+  addTruck: (newTruck) => set((state) => ({ trucks: [...state.trucks, {registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)], ...newTruck}] })),
   deleteTruck: (deletedTruck) => set((state) => ({ trucks: state.trucks.filter((truck) => truck.registrationNumber !== deletedTruck.registrationNumber) })),
   updateTruck: (updatedTruck) => set((state) => {
     const foundTruckIndex = state.trucks.findIndex((truck) => truck.registrationNumber === updatedTruck.registrationNumber);

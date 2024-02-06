@@ -15,6 +15,7 @@ import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import {useAuth} from "../providers/AuthContext.tsx";
 import logo from "../assets/logo.png";
 import {useI18n} from "../logic/i18n.ts";
+import {LanguagesToggles} from "../components/Sidebar.tsx";
 
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -83,6 +84,7 @@ export default function Auth() {
           justifyContent: "space-between",
         }}
       ><ColorSchemeToggle />
+        <LanguagesToggles/>
       </Box>
       <Box
         component="main"
@@ -142,7 +144,7 @@ export default function Auth() {
                   alignItems: "center",
                 }}
               >
-                <Checkbox size="sm" label="Remember me" name="persistent"/>
+                <Checkbox size="sm" label={t("rememberMe")} name="persistent"/>
                 <Link level="title-sm" href="#replace-with-a-link">
                   {t("forgotYourPassword")}
                 </Link>

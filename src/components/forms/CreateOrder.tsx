@@ -5,6 +5,7 @@ import {companies} from "../../logic/data.ts";
 import Button from "@mui/joy/Button";
 import {useI18n} from "../../logic/i18n.ts";
 import {useCrudForms} from "../../logic/crud-forms.ts";
+import {dateFormatter} from "../../helpers/dateFormatter.ts";
 
 interface FormElements extends HTMLFormControlsCollection {
   productType: HTMLInputElement
@@ -20,7 +21,9 @@ interface OrderFormElement extends HTMLFormElement {
 export const CreateOrder = () => {
   const {t} = useI18n();
   const {addOrder} = useOrdersStore();
-  const {setFormType} = useCrudForms();
+  const {setFormType, selectedData} = useCrudForms();
+
+  const order = selectedData as Order;
 
   return (
     <>
@@ -33,8 +36,8 @@ export const CreateOrder = () => {
           const data = {
             clientName: formElements.clientName.value,
             productType: formElements.productType.value,
-            volume: formElements.volume.value,
-            deliveryDate: new Date(formElements.deliveryDate.value).toDateString(),
+            volume: +formElements.volume.value,
+            deliveryDate: dateFormatter(new Date(formElements.deliveryDate.value)),
             deliveryTime: formElements.deliveryTime.value,
           } as Omit<Order, "id">;
           addOrder(data);
@@ -47,6 +50,7 @@ export const CreateOrder = () => {
             <Autocomplete
               freeSolo
               name="clientName"
+              defaultValue={order?.clientName}
               options={companies.map((company) => company.name)}
               slotProps={{
                 listbox: {
@@ -59,22 +63,18 @@ export const CreateOrder = () => {
           </FormControl>
           <FormControl>
             <FormLabel>{t("productType")}</FormLabel>
-            <Input name="productType" autoFocus required />
+            <Input name="productType" defaultValue={order?.productType as string} autoFocus required />
           </FormControl>
           <FormControl>
             <FormLabel>{t("volume")}</FormLabel>
-            <Input name="volume" required />
+            <Input name="volume" type="number" defaultValue={order?.volume} required />
           </FormControl>
           <FormControl>
             <FormLabel>{t("deliveryDate")}</FormLabel>
             <Input
               type="date"
               name="deliveryDate"
-              slotProps={{
-                input: {
-                  max: new Date().toISOString().split("T")[0],
-                },
-              }}
+              defaultValue={order?.deliveryDate ? dateFormatter(new Date(order.deliveryDate)) : undefined}
             />
           </FormControl>
           <FormControl>
@@ -88,6 +88,7 @@ export const CreateOrder = () => {
                   step: "3600"
                 },
               }}
+              defaultValue={order?.deliveryTime}
             />
           </FormControl>
 

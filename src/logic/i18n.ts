@@ -6,7 +6,7 @@ type State = {
     language: Languages
     changeLanguage: (newLanguage: Languages) => void
 }
-type Translations = {
+export type Translations = {
     dashboard: string
     settings: string
     staticData: string
@@ -33,6 +33,7 @@ type Translations = {
     email: string
     password: string
     forgotYourPassword: string
+    rememberMe: string
     signIn: string
     id: string
     companyName: string
@@ -71,6 +72,7 @@ type Translations = {
     lastSeen: string
     hours: string
     minutes: string
+    download: string
 }
 
 const useI18nStore = create<State>((set) => ({
@@ -118,6 +120,7 @@ const dictionary: Record<Languages, Translations> = {
     email: "Email",
     password: "Password",
     forgotYourPassword: "Forgot your password?",
+    rememberMe: "Remember me",
     signIn: "Sign in",
     id: "ID",
     companyName: "Company name",
@@ -143,6 +146,7 @@ const dictionary: Record<Languages, Translations> = {
     distributionCentres: "Distribution Centres",
     distanceMatrix: "Distance Matrix",
     export: "Export",
+    download: "Download",
     import: "Import",
     support: "Support",
     ordersForTomorrow: "Next day orders",
@@ -158,19 +162,19 @@ const dictionary: Record<Languages, Translations> = {
     minutes: "minutes",
   },
   cz: {
-    dashboard: "Nástěnka",
+    dashboard: "Dashboard",
     settings: "Nastavení",
     types: "Typy",
-    addNewOrder: "Přidat novou objednávku",
-    createNewOrder: "Vytvořit novou objednávku",
-    createNewTruck: "Vytvořit nový kamion",
-    createNewClient: "Vytvořit nového klienta",
-    createNewDistributionCenter: "Vytvořit nové distribuční centrum",
-    fillInTheInformationOfTheOrder: "Vyplňte informace o objednávce.",
-    fillInTheInformationOfTheTruck: "Vyplňte informace o kamionu.",
-    fillInTheInformationOfTheClient: "Vyplňte informace o klientovi.",
-    fillInTheInformationOfTheDistributionCenter: "Vyplňte informace o distribučním centru.",
-    clientName: "Jméno klienta",
+    addNewOrder: "Vytvořit objednávku",
+    createNewOrder: "Vytvořit objednávku",
+    createNewTruck: "Přidat kamion",
+    createNewClient: "Přidat klienta",
+    createNewDistributionCenter: "Přidat distribuční centrum",
+    fillInTheInformationOfTheOrder: "Vyplňte informace o objednávce",
+    fillInTheInformationOfTheTruck: "Vyplňte informace o kamionu",
+    fillInTheInformationOfTheClient: "Vyplňte informace o klientovi",
+    fillInTheInformationOfTheDistributionCenter: "Vyplňte informace o distribučním centru",
+    clientName: "Název klienta",
     productType: "Typ produktu",
     volume: "Objem",
     deliveryDate: "Datum dodání",
@@ -185,7 +189,7 @@ const dictionary: Record<Languages, Translations> = {
     goods: "Zboží",
     location: "Lokace",
     search: "Hledat",
-    registrationNumber: "Registrační číslo",
+    registrationNumber: "SPZ",
     maxLoad: "Maximální zatížení",
     type: "Typ",
     availableTrucks: "Dostupné kamiony",
@@ -194,17 +198,17 @@ const dictionary: Record<Languages, Translations> = {
     orders: "Objednávky",
     name: "Jméno",
     totalActiveOrders: "Celkový počet aktivních objednávek",
-    activeOrdersForNextDay: "Aktivní objednávky na příští den",
+    activeOrdersForNextDay: "Aktivní objednávky na další den",
     activeVehiclesAvailable: "Dostupná vozidla",
-    ordersAllocatedToDrivers: "Objednávky přidělené řidičům",
-    unallocatedOrdersForNextDay: "Nealokované objednávky na příští den",
-    totalKilometersPlannedForNextDay: "Celkový počet kilometrů plánovaných na příští den",
+    ordersAllocatedToDrivers: "Zaplanované objednávky",
+    unallocatedOrdersForNextDay: "Nezaplanované objednávky na další den",
+    totalKilometersPlannedForNextDay: "Celkový počet zaplánovaných kilometrů",
     staticData: "Statická data",
     planning: "Plánování",
     trucks: "Kamiony",
-    clients: "Klienti",
+    clients: "Zákazníci",
     distributionCentres: "Distribuční centra",
-    distanceMatrix: "Maticová vzdálenost",
+    distanceMatrix: "Vzdálenostní matice",
     export: "Export",
     import: "Import",
     support: "Podpora",
@@ -213,7 +217,7 @@ const dictionary: Record<Languages, Translations> = {
     driverName: "Jméno řidiče",
     allocatedDepot: "Přidělené depo",
     addData: "Přidat data",
-    updateClient: "Aktualizovat klienta",
+    updateClient: "Aktualizovat zákazníka",
     delete: "Smazat",
     lastSeen: "Naposledy viděno",
     updateDistributionCenter: "Aktualizovat distribuční centrum",
@@ -222,5 +226,7 @@ const dictionary: Record<Languages, Translations> = {
     time: "Čas",
     hours: "hodin",
     minutes: "minut",
+    rememberMe: "",
+    download: "",
   }
 };

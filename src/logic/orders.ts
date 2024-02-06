@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import {getRandomValue} from "../helpers/utils.ts";
-import {companies} from "./data.ts";
+import {dateFormatter} from "../helpers/dateFormatter.ts";
 
 export const names = [
   "Josef Svoboda","Petr Horák",
@@ -22,6 +22,39 @@ export const names = [
   "Veronika Němec", "Petra Novotná","Eva Černý",
   ""
 ] as const;
+const clientNames  = [
+  "Stavební Podnik Praha",
+  "Betonové Řešení s.r.o.",
+  "Zelená Pole Agro a.s.",
+  "Sklárny CrystalTech",
+  "InfraStav Polsko",
+  "Ekostav Matériały",
+  "Budujeme Budoucnost Kft.",
+  "TisztaVíz Kezelés Zrt.",
+  "VitalKrmivo Solutions",
+  "MetalTech Innováció",
+  "Barvy a Laky Bright",
+  "Polymery HighTech Sp. z o.o.",
+  "Bezpečné Sklady s.r.o.",
+  "Rychlé Cesty a.s.",
+  "Kamenolom SolidStone Kft.",
+  "Vysoké Stavby SK",
+  "Obnovitelné Zdroje Energii",
+  "EcoHnojiva CZ",
+  "AquaČistota Vodní Systémy",
+  "Globální Obiloviny s.r.o.",
+  "Městská Zelená s.r.o.",
+  "Domovní Rozvoj SK a.s.",
+  "Čistá Energie HU Zrt.",
+  "AgroTech Východ s.r.o.",
+  "SkloDesign Polska",
+  "Inovační Kovové Technologie",
+  "Prostor pro Život Kft.",
+  "Voda Plus SK",
+  "Solární Řešení s.r.o.",
+  "Zahrada Budoucnosti Zrt."
+];
+
 export const products = [
   "Cement",
   "Létavý popel",
@@ -50,7 +83,7 @@ export type ProductType = keyof typeof products
 export interface Order {
     id: string
     productType: ProductType
-    volume: string
+    volume: number
     clientName: string
     deliveryDate: string
     deliveryTime: string
@@ -63,7 +96,7 @@ type State = {
     updateOrders: (newOrders: Order[]) => void
 }
 
-export const nextDayOrders = (orders: Order[]) => orders.filter((order) => new Date(order.deliveryDate) > new Date());
+export const nextDayOrders = (orders: Order[]) => orders.filter((order) => new Date() < new Date(order.deliveryDate) && new Date(order.deliveryDate) < new Date(Date.now() + (86400000)));
 
 export function getRandomDate() {
   const startDate = new Date(Date.now() - (86400000 * 2));
@@ -78,9 +111,9 @@ export function getRandomDate() {
 let orders = Array.from({length: 50}, () => ({
   id: `ORD-${getRandomValue(0, 99999)}`,
   productType: products[getRandomValue(0, products.length)] as ProductType,
-  volume: `${getRandomValue(1, 20)} tonnes`,
-  clientName: companies[getRandomValue(0, companies.length)].name,
-  deliveryDate: getRandomDate().toDateString(),
+  volume: getRandomValue(2, 20),
+  clientName: clientNames[getRandomValue(0, clientNames.length)],
+  deliveryDate: dateFormatter(getRandomDate()),
   deliveryTime: `${String(getRandomValue(0, 24)).padStart(2, "0")}:00`
 }));
 orders = [...new Map(orders.map(item =>
