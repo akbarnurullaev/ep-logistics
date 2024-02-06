@@ -95,6 +95,7 @@ type State = {
     updateOrder: (order: Order) => void
     removeOrder: (removableOrder: Order) => void
     updateOrders: (newOrders: Order[]) => void
+    resetOrders: () => void
 }
 
 export const nextDayOrders = (orders: Order[]) => orders.filter((order) => new Date() < new Date(order.deliveryDate) && new Date(order.deliveryDate) < new Date(Date.now() + (86400000)));
@@ -148,4 +149,7 @@ export const useOrdersStore = create<State>((set) => ({
     set((state) => ({ orders: [...state.orders].filter((order) => order.id !== removableOrder.id) }));
   },
   updateOrders: newOrders => set((state) => ({ orders: [...state.orders, ...newOrders] })),
+  resetOrders: () => set(() => {
+    return {orders};
+  })
 }));

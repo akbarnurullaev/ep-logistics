@@ -1,6 +1,6 @@
 import {DataGrid, GridToolbarQuickFilter, GridValidRowModel} from "@mui/x-data-grid";
 import React, {ReactNode, useState} from "react";
-import {useI18n} from "../../logic/i18n.ts";
+import {Languages, useI18n} from "../../logic/i18n.ts";
 import * as XLSX from "xlsx";
 import {saveAs} from "file-saver";
 import exportFromJSON from "export-from-json";
@@ -20,7 +20,7 @@ type Props<T extends GridValidRowModel, R extends string> = {
 } & Omit<DataGridProps<T>, "slots">
 
 export const CustomDataGrid = <T extends GridValidRowModel, R extends string>({importManagement, addOn, rows, ...dataGridProps}: Props<T, R>) => {
-  const {t} = useI18n();
+  const {t, language} = useI18n();
   const [importFromExcel, setImportFromExcel]= useState(false);
 
   const CustomToolbar = () => {
@@ -107,6 +107,7 @@ export const CustomDataGrid = <T extends GridValidRowModel, R extends string>({i
           fields={importManagement.fields}
           onClose={() => setImportFromExcel(false)}
           onSubmit={importManagement.onImport}
+          translations={getTranslations(language)}
           customTheme={{
             colors: {
               rsi: {
@@ -137,4 +138,161 @@ export const CustomDataGrid = <T extends GridValidRowModel, R extends string>({i
       />
     </>
   );
+};
+
+
+const getTranslations = (language: Languages) => {
+  return language === "en" ?  {
+    uploadStep: {
+      title: "Upload file",
+      manifestTitle: "Data that we expect:",
+      manifestDescription: "(You will have a chance to rename or remove columns in next steps)",
+      maxRecordsExceeded: (maxRecords: number) => `Too many records. Up to ${maxRecords} allowed`,
+      dropzone: {
+        title: "Upload .xlsx, .xls or .csv file",
+        errorToastDescription: "upload rejected",
+        activeDropzoneTitle: "Drop file here...",
+        buttonTitle: "Select file",
+        loadingTitle: "Processing...",
+      },
+      selectSheet: {
+        title: "Select the sheet to use",
+        nextButtonTitle: "Next",
+        backButtonTitle: "Back",
+      },
+    },
+    selectHeaderStep: {
+      title: "Select header row",
+      nextButtonTitle: "Next",
+      backButtonTitle: "Back",
+    },
+    matchColumnsStep: {
+      title: "Match Columns",
+      nextButtonTitle: "Next",
+      backButtonTitle: "Back",
+      userTableTitle: "Your table",
+      templateTitle: "Will become",
+      selectPlaceholder: "Select column...",
+      ignoredColumnText: "Column ignored",
+      subSelectPlaceholder: "Select...",
+      matchDropdownTitle: "Match",
+      unmatched: "Unmatched",
+      duplicateColumnWarningTitle: "Another column unselected",
+      duplicateColumnWarningDescription: "Columns cannot duplicate",
+    },
+    validationStep: {
+      title: "Validate data",
+      nextButtonTitle: "Confirm",
+      backButtonTitle: "Back",
+      noRowsMessage: "No data found",
+      noRowsMessageWhenFiltered: "No data containing errors",
+      discardButtonTitle: "Discard selected rows",
+      filterSwitchTitle: "Show only rows with errors",
+    },
+    alerts: {
+      confirmClose: {
+        headerTitle: "Exit import flow",
+        bodyText: "Are you sure? Your current information will not be saved.",
+        cancelButtonTitle: "Cancel",
+        exitButtonTitle: "Exit flow",
+      },
+      submitIncomplete: {
+        headerTitle: "Errors detected",
+        bodyText: "There are still some rows that contain errors. Rows with errors will be ignored when submitting.",
+        bodyTextSubmitForbidden: "There are still some rows containing errors.",
+        cancelButtonTitle: "Cancel",
+        finishButtonTitle: "Submit",
+      },
+      submitError: {
+        title: "Error",
+        defaultMessage: "An error occurred while submitting data",
+      },
+      unmatchedRequiredFields: {
+        headerTitle: "Not all columns matched",
+        bodyText: "There are required columns that are not matched or ignored. Do you want to continue?",
+        listTitle: "Columns not matched:",
+        cancelButtonTitle: "Cancel",
+        continueButtonTitle: "Continue",
+      },
+      toast: {
+        error: "Error",
+      },
+    },
+  } : {
+    uploadStep: {
+      title: "Nahrát soubor",
+      manifestTitle: "Data, která očekáváme:",
+      manifestDescription: "(Máte možnost přejmenovat nebo odebrat sloupce v dalších krocích)",
+      maxRecordsExceeded: (maxRecords: number) => `Příliš mnoho záznamů. Až ${maxRecords} je povoleno.`,
+      dropzone: {
+        title: "Nahrát soubor .xlsx, .xls nebo .csv",
+        errorToastDescription: "Nahrávání zamítnuto",
+        activeDropzoneTitle: "Sem přetáhněte soubor...",
+        buttonTitle: "Vybrat soubor",
+        loadingTitle: "Zpracování...",
+      },
+      selectSheet: {
+        title: "Vyberte list k použití",
+        nextButtonTitle: "Další",
+        backButtonTitle: "Zpět",
+      },
+    },
+    selectHeaderStep: {
+      title: "Vyberte řádek s hlavičkou",
+      nextButtonTitle: "Další",
+      backButtonTitle: "Zpět",
+    },
+    matchColumnsStep: {
+      title: "Srovnat sloupce",
+      nextButtonTitle: "Další",
+      backButtonTitle: "Zpět",
+      userTableTitle: "Vaše tabulka",
+      templateTitle: "Stane se",
+      selectPlaceholder: "Vyberte sloupec...",
+      ignoredColumnText: "Sloupec ignorován",
+      subSelectPlaceholder: "Vyberte...",
+      matchDropdownTitle: "Srovnat",
+      unmatched: "Nesouhlasící",
+      duplicateColumnWarningTitle: "Další sloupec není vybrán",
+      duplicateColumnWarningDescription: "Sloupce nemohou být duplikovány",
+    },
+    validationStep: {
+      title: "Ověření dat",
+      nextButtonTitle: "Potvrdit",
+      backButtonTitle: "Zpět",
+      noRowsMessage: "Nebyla nalezena žádná data",
+      noRowsMessageWhenFiltered: "Nebyla nalezena žádná data obsahující chyby",
+      discardButtonTitle: "Zahodit vybrané řádky",
+      filterSwitchTitle: "Zobrazit pouze řádky s chybami",
+    },
+    alerts: {
+      confirmClose: {
+        headerTitle: "Ukončit import",
+        bodyText: "Jste si jistí? Vaše aktuální informace nebudou uloženy.",
+        cancelButtonTitle: "Zrušit",
+        exitButtonTitle: "Ukončit import",
+      },
+      submitIncomplete: {
+        headerTitle: "Zjištěny chyby",
+        bodyText: "Stále existují některé řádky obsahující chyby. Řádky s chybami budou při odesílání ignorovány.",
+        bodyTextSubmitForbidden: "Stále existují některé řádky obsahující chyby.",
+        cancelButtonTitle: "Zrušit",
+        finishButtonTitle: "Odeslat",
+      },
+      submitError: {
+        title: "Chyba",
+        defaultMessage: "Při odesílání dat došlo k chybě",
+      },
+      unmatchedRequiredFields: {
+        headerTitle: "Neshodují se všechny sloupce",
+        bodyText: "Existují povinné sloupce, které nejsou shodovány nebo jsou ignorovány. Chcete pokračovat?",
+        listTitle: "Neshodující se sloupce:",
+        cancelButtonTitle: "Zrušit",
+        continueButtonTitle: "Pokračovat",
+      },
+      toast: {
+        error: "Chyba",
+      },
+    },
+  };
 };

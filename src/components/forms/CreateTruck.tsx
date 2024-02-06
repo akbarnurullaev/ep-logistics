@@ -44,7 +44,7 @@ export const CreateTruck = () => {
           const data: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4"> = {
             registrationNumber: formElements.registrationNumber.value,
             driverName: formElements.driverName.value,
-            maxLoad: formElements.maxLoad.value,
+            maxLoad: +formElements.maxLoad.value,
             types: formElements.types.value,
             allocatedDepot: formElements.allocatedDepot.value,
             location: formElements.location.value,
@@ -69,7 +69,7 @@ export const CreateTruck = () => {
 
           <FormControl>
             <FormLabel>{t("maxLoad")}</FormLabel>
-            <Input name="maxLoad" defaultValue={selectedTruck?.maxLoad} required />
+            <Input name="maxLoad" type="number" defaultValue={selectedTruck?.maxLoad} required />
           </FormControl>
 
           <FormControl>

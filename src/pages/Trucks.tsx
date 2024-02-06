@@ -19,7 +19,7 @@ export const Trucks = () => {
       }}
       columns={[
         {headerName: t("registrationNumber"), field: "registrationNumber", valueGetter: ({row}) => row.registrationNumber, flex: 1},
-        {headerName: t("maxLoad"), field: "maxLoad", valueGetter: ({row}) => row.maxLoad, flex: 1},
+        {headerName: t("maxLoad"), field: "maxLoad", valueGetter: ({row}) => row.maxLoad + " t.", flex: 1},
         {headerName: t("type"), field: "type", valueGetter: ({row}) => row.types, flex: 1},
         {headerName: t("driverName"), field: "driverName", valueGetter: ({row}) => row.driverName, flex: 1},
         {headerName: t("allocatedDepot"), field: "allocatedDepot", valueGetter: ({row}) => row.allocatedDepot, flex: 1},

@@ -6,7 +6,7 @@ import {companies, getDistanceMatrix, locations, truckCodes} from "./data.ts";
 export interface Truck {
     registrationNumber: string
     driverName: string
-    maxLoad: string
+    maxLoad: number
     types: string
     allocatedDepot: string
     location: string
@@ -43,6 +43,7 @@ type State = {
     updateTruck: (truck: Truck) => void
     deleteTruck: (truck: Truck) => void
     setOrderToTruckDelivery: (truck: Truck, order: Order, index: 1|2|3|4) => void
+    resetTruckDeliveries: () => void
 
     addDistributionCenter: (distributionCenter: Omit<DistributionCenter, "id" >) => void
     updateDistributionCenter: (distributionCenter: DistributionCenter) => void
@@ -58,7 +59,7 @@ let trucks: Truck[] = Array.from({length: 10}, () => {
   return {
     registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)],
     driverName: names[getRandomValue(0, names.length)],
-    maxLoad: `${getRandomValue(0, 20)} tons`,
+    maxLoad: getRandomValue(0, 20),
     types: getRandomGoods(),
     allocatedDepot: company.name,
     location: `${company.location.latitude}, ${company.location.longitude}`,
@@ -95,18 +96,6 @@ export const useStaticDataStore = create<State>((set) => ({
   trucks,
   clients,
   distributionCenters,
-  setOrderToTruckDelivery: (truck, order, index) => {
-    set((state) => {
-      const trucks = [...state.trucks];
-      const foundTruck = trucks.find((truck_) => truck_.registrationNumber === truck.registrationNumber);
-
-      const deliveryTime = getDistanceMatrix("cz").find((dm) => dm.name === order.clientName)?.time || "2 hours";
-
-        foundTruck![`delivery${index}`] = `${order.id} - ${order.clientName}: ${deliveryTime}`;
-
-        return {trucks};
-    });
-  },
 
   addClient: (newClient) => set((state) => {
     return {clients: [...state.clients, {id: `CL-${getRandomValue(100, 900)}`, ...newClient}]};
@@ -131,7 +120,24 @@ export const useStaticDataStore = create<State>((set) => ({
 
     return {trucks};
   }),
+  setOrderToTruckDelivery: (truck, order, index) => {
+    set((state) => {
+      const trucks = [...state.trucks];
+      const foundTruck = trucks.find((truck_) => truck_.registrationNumber === truck.registrationNumber);
 
+      const deliveryTime = getDistanceMatrix("cz").find((dm) => dm.name === order.clientName)?.time || "2 hours";
+
+        foundTruck![`delivery${index}`] = `${order.id} - ${order.clientName}: ${deliveryTime}`;
+
+        return {trucks};
+    });
+  },
+  resetTruckDeliveries: () => set(state => {
+    const removedDeliveriesTrucks = state.trucks.map((truck) => ({...truck, delivery1: undefined, delivery2: undefined, delivery3: undefined, delivery4: undefined}));
+    return {
+      trucks: removedDeliveriesTrucks
+    };
+  }),
 
   addDistributionCenter: (newDistributionCenter) => set((state) => ({distributionCenters: [...state.distributionCenters, {id: `DC-${getRandomValue(100, 900)}`, ...newDistributionCenter}]})),
   deleteDistributionCenter: (deletedDistributionCenter) => set((state) => ({distributionCenters: state.distributionCenters.filter((distributionCenter) => distributionCenter.id !== deletedDistributionCenter.id)})),

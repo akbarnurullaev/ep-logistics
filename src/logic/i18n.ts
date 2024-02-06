@@ -44,6 +44,8 @@ export type Translations = {
     location: string
     search: string
     registrationNumber: string
+    reset: string
+    automaticPlaning: string
     maxLoad: string
     types: string
     type: string
@@ -162,6 +164,8 @@ const dictionary: Record<Languages, Translations> = {
     time: "Time",
     hours: "hours",
     minutes: "minutes",
+    reset: "Reset",
+    automaticPlaning: "Automatic planning"
   },
   cz: {
     dashboard: "Dashboard",
@@ -231,5 +235,7 @@ const dictionary: Record<Languages, Translations> = {
     rememberMe: "Zapamatuj si mě",
     download: "Stáhnout",
     updateOrder: "Aktualizovat objednávku",
+    reset: "Zrušit plánování",
+    automaticPlaning: "Automatické plánování"
   }
 };

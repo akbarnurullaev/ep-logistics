@@ -8,13 +8,51 @@ import {CustomDataGrid} from "../components/common/CustomDataGrid.tsx";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/joy/Box";
 import {Button} from "@mui/material";
+import {getRandomValue} from "../helpers/utils.ts";
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const Planning = () => {
   const {t} = useI18n();
-  const {trucks} = useStaticDataStore();
-  const {orders: allOrders} = useOrdersStore();
+  const {trucks, setOrderToTruckDelivery, resetTruckDeliveries} = useStaticDataStore();
+  const {orders: allOrders, removeOrder, resetOrders} = useOrdersStore();
 
   const orders = nextDayOrders(allOrders);
+
+  const plan = async () => {
+    const copiedOrders = [...orders];
+
+    for (const truck of trucks) {
+      const deliveriesCount = getRandomValue(1, 4);
+
+      for (let i = 1; i <= deliveriesCount; i++) {
+        const order = copiedOrders.length ? copiedOrders[copiedOrders.length - 1] : null;
+        if (order) {
+          await sleep(1000);
+          setOrderToTruckDelivery(truck, order, i as 1 | 2 | 3 | 4);
+          removeOrder(order);
+          copiedOrders.pop();
+          console.log(orders);
+        }
+      }
+    }
+    
+
+    // trucks.forEach((truck, index) => {
+    //   const deliveriesCount = getRandomValue(1, 4);
+    //
+    //   for (let i = 1; i <= deliveriesCount; i++) {
+    //     const order = orders[index];
+    //
+    //     if (order) {
+    //
+    //       setTimeout(() => {
+    //         setOrderToTruckDelivery(truck, order, i);
+    //       }, 10000);
+    //     }
+    //   }
+    // });
+  };
 
   return (
     <>
@@ -23,10 +61,17 @@ export const Planning = () => {
         <CustomDataGrid
           getRowId={({registrationNumber}) => registrationNumber}
           rows={trucks}
-          addOn={<Button variant="text">EXPORT TMS</Button>}
+          addOn={<>
+            <Button sx={{ mr: 2 }} variant="contained" onClick={plan}>{t("automaticPlaning")}</Button>
+            <Button sx={{ mr: 2 }} variant="outlined" onClick={() => {
+              resetOrders();
+              resetTruckDeliveries();
+            }}>{t("reset")}</Button>
+            <Button variant="text">EXPORT TMS</Button>
+          </>}
           columns={[
             {headerName: t("registrationNumber"), field: "registrationNumber", valueGetter: ({row}) => row.registrationNumber, flex: 1},
-            {headerName: t("maxLoad"), field: "maxLoad", valueGetter: ({row}) => row.maxLoad, flex: 0.6},
+            {headerName: t("maxLoad"), field: "maxLoad", valueGetter: ({row}) => row.maxLoad + " t.", flex: 0.6},
             {headerName: t("type"), field: "type", valueGetter: ({row}) => row.types, flex: 1},
             {headerName: t("driverName"), field: "driverName", valueGetter: ({row}) => row.driverName, flex: 1},
             {headerName: t("allocatedDepot"), field: "allocatedDepot", valueGetter: ({row}) => row.allocatedDepot, flex: 1},
@@ -66,7 +111,7 @@ const OrderIdDnD = ({row}: {row: Order}) => {
       isDragging: monitor.isDragging(),
     })
   }));
-    
+
   return (
     <Box
       role="Handle"

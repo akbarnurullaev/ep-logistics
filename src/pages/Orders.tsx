@@ -121,7 +121,7 @@ export function Orders() {
         columns={[
           {field: "id", headerName: t("id"), valueGetter: ({row}) => row.id, flex: 1},
           {field: "productType", headerName: t("productType"), valueGetter: ({row}) => row.productType, flex: 1},
-          {field: "volume", headerName: t("volume"), valueGetter: ({row}) => `${row.volume} tonnes`, flex: 1},
+          {field: "volume", headerName: t("volume"), valueGetter: ({row}) => `${row.volume} t.`, flex: 1},
           {field: "deliveryDate", headerName: t("deliveryDate"), valueGetter: ({row}) => row.deliveryDate, flex: 1},
           {field: "deliveryTime", headerName: t("deliveryTime"), valueGetter: ({row}) => row.deliveryTime, flex: 1},
           {field: "clientName", headerName: t("clientName"), valueGetter: ({row}) => row.clientName, flex: 1},
