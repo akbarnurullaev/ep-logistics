@@ -110,7 +110,12 @@ export const useStaticDataStore = () => {
         return {trucks};
       });
     },
-    addClient: (newClient) => set((state) => ({clients: [...state.clients, {id: `CL-${getRandomValue(100, 900)}`, ...newClient}]})),
+
+    addClient: (newClient) => set((state) => {
+      const d= {clients: [...state.clients, {id: `CL-${getRandomValue(100, 900)}`, ...newClient}]};
+      console.log(d);
+      return {clients: []};
+    }),
     deleteClient: (deletedClient) => set((state) => ({clients: state.clients.filter((client) => client.id !== deletedClient.id)})),
     updateClient: (updatedClient) => set((state) => {
       const foundClientIndex = state.clients.findIndex((client) => client.id === updatedClient.id);

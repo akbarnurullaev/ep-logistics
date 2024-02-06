@@ -45,6 +45,7 @@ export const CreateClient = () => {
           if (isEditing) {
             updateClient({...selectedClient, ...data});
           } else {
+            console.log("ewfwefewf");
             addClient(data);
           }
           setFormType(null);

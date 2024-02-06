@@ -6,7 +6,7 @@ import {useCrudForms} from "../logic/crud-forms.ts";
 export const Clients = () => {
   const {t} = useI18n();
   const { clients} = useStaticDataStore();
-  const {setFormType, setSelectedData} =useCrudForms();
+  const {setFormType, setSelectedData} = useCrudForms();
 
   return (
     <CustomDataGrid

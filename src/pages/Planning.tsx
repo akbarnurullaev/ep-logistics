@@ -7,6 +7,7 @@ import {useI18n} from "../logic/i18n.ts";
 import {CustomDataGrid} from "../components/common/CustomDataGrid.tsx";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/joy/Box";
+import {Button} from "@mui/material";
 
 export const Planning = () => {
   const {t} = useI18n();
@@ -22,6 +23,7 @@ export const Planning = () => {
         <CustomDataGrid
           getRowId={({registrationNumber}) => registrationNumber}
           rows={trucks}
+          addOn={<Button variant="text">EXPORT TMS</Button>}
           columns={[
             {headerName: t("registrationNumber"), field: "registrationNumber", valueGetter: ({row}) => row.registrationNumber, flex: 1},
             {headerName: t("maxLoad"), field: "maxLoad", valueGetter: ({row}) => row.maxLoad, flex: 0.6},
@@ -41,6 +43,7 @@ export const Planning = () => {
       <Box sx={{ maxHeight: 600 }}>
         <CustomDataGrid
           rows={orders}
+          addOn={<Button variant="text">EXPORT TMS</Button>}
           columns={[
             {field: "id", headerName: t("id"), valueGetter: ({row}) => row.id, flex: 1, renderCell:({row}) => <OrderIdDnD row={row}/>},
             {field: "productType", headerName: t("productType"), valueGetter: ({row}) => row.productType, flex: 1},

@@ -24,9 +24,9 @@ import {CreateTruck} from "./forms/CreateTruck.tsx";
 import {CreateClient} from "./forms/CreateClient.tsx";
 import {CreateDistributionCenter} from "./forms/CreateDistributionCenter.tsx";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import Button from "@mui/joy/Button";
 import BusinessIcon from "@mui/icons-material/BusinessOutlined";
 import FactoryOutlinedIcon from "@mui/icons-material/FactoryOutlined";
+import Button from "@mui/joy/Button";
 
 
 export type Path = {
@@ -89,10 +89,6 @@ const FormsMap: Record<FormType, ReactNode> = {
 
 // TODO: type it
 const Buttons: Record<string, {title: keyof Translations, formType: FormType}> = {
-  "/": {title: "createNewOrder", formType: "order"},
-  "/orders": {title: "createNewOrder", formType: "order"},
-  "/planning": {title: "createNewDistributionCenter", formType: "distributionCenter"},
-  "/distance-matrix": {title: "createNewOrder", formType: "order"},
   "/static-data/trucks": {title: "createNewTruck", formType: "truck"},
   "/static-data/clients": {title: "createNewClient", formType: "client"},
   "/static-data/distribution-centres": {title: "createNewDistributionCenter", formType: "distributionCenter"},
@@ -147,8 +143,12 @@ export function Main() {
               {title}
             </Typography>
 
-            {Buttons[pathname] && <Button color="primary" variant="solid" size="lg"
-              onClick={() => setFormType(Buttons[pathname].formType)}>{t(Buttons[pathname].title)}</Button>}
+            <Box>
+              {Buttons[pathname] && <Button sx={{ mr: 2 }} color="primary" variant="solid" size="lg"
+                onClick={() => setFormType(Buttons[pathname].formType)}>{t(Buttons[pathname].title)}</Button>}
+              <Button color="primary" variant="solid" size="lg"
+                onClick={() => setFormType("order")}>{t("createNewOrder")}</Button>
+            </Box>
           </Box>
           <Routes>
             {paths.map(({path, component, children}) => (
