@@ -1,3 +1,5 @@
+import {Languages} from "./i18n.ts";
+
 export const locations = [
   { name: "TransLogist Centrum Praha (CZ)", location: { latitude: 49.2607, longitude: 15.5495 } },
   { name: "Kamionový Přístav Brno (CZ)", location: { latitude: 49.5095, longitude: 15.5625 } },
@@ -94,3 +96,191 @@ export const truckCodes = [
   "MAS 5299",
   "ZLS 4374"
 ];
+
+export const getDistanceMatrix = (language: Languages) => [
+  {
+    "id": "Stavební Podnik Praha",
+    "name": "Stavební Podnik Praha",
+    "time": "13 hodin/59 minut",
+    "distance": "909 km"
+  },
+  {
+    "id": "Betonové Řešení s.r.o.",
+    "name": "Betonové Řešení s.r.o.",
+    "time": "9 hodin/13 minut",
+    "distance": "645 km"
+  },
+  {
+    "id": "Zelená Pole Agro a.s.",
+    "name": "Zelená Pole Agro a.s.",
+    "time": "3 hodin/55 minut",
+    "distance": "204 km"
+  },
+  {
+    "id": "Sklárny CrystalTech",
+    "name": "Sklárny CrystalTech",
+    "time": "10 hodin/23 minut",
+    "distance": "727 km"
+  },
+  {
+    "id": "InfraStav Polsko",
+    "name": "InfraStav Polsko",
+    "time": "2 hodin/1 minut",
+    "distance": "141 km"
+  },
+  {
+    "id": "Ekostav Matériały",
+    "name": "Ekostav Matériały",
+    "time": "9 hodin/17 minut",
+    "distance": "650 km"
+  },
+  {
+    "id": "Budujeme Budoucnost Kft.",
+    "name": "Budujeme Budoucnost Kft.",
+    "time": "7 hodin/24 minut",
+    "distance": "518 km"
+  },
+  {
+    "id": "TisztaVíz Kezelés Zrt.",
+    "name": "TisztaVíz Kezelés Zrt.",
+    "time": "5 hodin/55 minut",
+    "distance": "344 km"
+  },
+  {
+    "id": "VitalKrmivo Solutions",
+    "name": "VitalKrmivo Solutions",
+    "time": "12 hodin/6 minut",
+    "distance": "847 km"
+  },
+  {
+    "id": "MetalTech Innováció",
+    "name": "MetalTech Innováció",
+    "time": "8 hodin/42 minut",
+    "distance": "539 km"
+  },
+  {
+    "id": "Barvy a Laky Bright",
+    "name": "Barvy a Laky Bright",
+    "time": "8 hodin/43 minut",
+    "distance": "540 km"
+  },
+  {
+    "id": "Polymery HighTech Sp. z o.o.",
+    "name": "Polymery HighTech Sp. z o.o.",
+    "time": "11 hodin/40 minut",
+    "distance": "747 km"
+  },
+  {
+    "id": "Bezpečné Sklady s.r.o.",
+    "name": "Bezpečné Sklady s.r.o.",
+    "time": "6 hodin/45 minut",
+    "distance": "403 km"
+  },
+  {
+    "id": "Rychlé Cesty a.s.",
+    "name": "Rychlé Cesty a.s.",
+    "time": "8 hodin/12 minut",
+    "distance": "574 km"
+  },
+  {
+    "id": "Kamenolom SolidStone Kft.",
+    "name": "Kamenolom SolidStone Kft.",
+    "time": "3 hodin/51 minut",
+    "distance": "200 km"
+  },
+  {
+    "id": "Vysoké Stavby SK",
+    "name": "Vysoké Stavby SK",
+    "time": "4 hodin/37 minut",
+    "distance": "253 km"
+  },
+  {
+    "id": "Obnovitelné Zdroje Energii",
+    "name": "Obnovitelné Zdroje Energii",
+    "time": "13 hodin/30 minut",
+    "distance": "875 km"
+  },
+  {
+    "id": "EcoHnojiva CZ",
+    "name": "EcoHnojiva CZ",
+    "time": "4 hodin/16 minut",
+    "distance": "299 km"
+  },
+  {
+    "id": "AquaČistota Vodní Systémy",
+    "name": "AquaČistota Vodní Systémy",
+    "time": "7 hodin/48 minut",
+    "distance": "476 km"
+  },
+  {
+    "id": "Globální Obiloviny s.r.o.",
+    "name": "Globální Obiloviny s.r.o.",
+    "time": "2 hodin/58 minut",
+    "distance": "138 km"
+  },
+  {
+    "id": "Městská Zelená s.r.o.",
+    "name": "Městská Zelená s.r.o.",
+    "time": "5 hodin/30 minut",
+    "distance": "315 km"
+  },
+  {
+    "id": "Domovní Rozvoj SK a.s.",
+    "name": "Domovní Rozvoj SK a.s.",
+    "time": "6 hodin/9 minut",
+    "distance": "430 km"
+  },
+  {
+    "id": "Čistá Energie HU Zrt.",
+    "name": "Čistá Energie HU Zrt.",
+    "time": "5 hodin/19 minut",
+    "distance": "372 km"
+  },
+  {
+    "id": "AgroTech Východ s.r.o.",
+    "name": "AgroTech Východ s.r.o.",
+    "time": "12 hodin/47 minut",
+    "distance": "825 km"
+  },
+  {
+    "id": "SkloDesign Polska",
+    "name": "SkloDesign Polska",
+    "time": "10 hodin/12 minut",
+    "distance": "714 km"
+  },
+  {
+    "id": "Inovační Kovové Technologie",
+    "name": "Inovační Kovové Technologie",
+    "time": "3 hodin/3 minut",
+    "distance": "214 km"
+  },
+  {
+    "id": "Prostor pro Život Kft.",
+    "name": "Prostor pro Život Kft.",
+    "time": "11 hodin/18 minut",
+    "distance": "791 km"
+  },
+  {
+    "id": "Voda Plus SK",
+    "name": "Voda Plus SK",
+    "time": "12 hodin/53 minut",
+    "distance": "832 km"
+  },
+  {
+    "id": "Solární Řešení s.r.o.",
+    "name": "Solární Řešení s.r.o.",
+    "time": "9 hodin/26 minut",
+    "distance": "660 km"
+  },
+  {
+    "id": "Zahrada Budoucnosti Zrt.",
+    "name": "Zahrada Budoucnosti Zrt.",
+    "time": "9 hodin/33 minut",
+    "distance": "598 km"
+  }
+].map((matrix) => {
+  return {
+    ...matrix,
+    time: language === "en" ?  matrix.time.replace("hodin", "hours").replace("minut", "minutes") : matrix.time
+  };
+});
