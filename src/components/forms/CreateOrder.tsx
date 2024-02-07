@@ -111,7 +111,7 @@ export const CreateOrder = () => {
             />
           </FormControl>
 
-          <Button type="submit">{t("createNewOrder")}</Button>
+          <Button type="submit">{t(isEditing ? "updateOrder" : "createNewOrder")}</Button>
           {isEditing && <Button variant="plain" type="submit" onClick={() => {
             removeOrder(order);
             setFormType(null);

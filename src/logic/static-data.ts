@@ -58,8 +58,8 @@ let trucks: Truck[] = Array.from({length: 10}, () => {
   const company = companies[getRandomValue(0, companies.length)];
   return {
     registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)],
-    driverName: names[getRandomValue(0, names.length)],
-    maxLoad: getRandomValue(0, 20),
+    driverName: names[getRandomValue(0, names.length - 1)],
+    maxLoad: getRandomValue(1, 20),
     types: getRandomGoods(),
     allocatedDepot: company.name,
     location: `${company.location.latitude}, ${company.location.longitude}`,
@@ -69,9 +69,9 @@ trucks = [...new Map(trucks.map(item =>
   [item["registrationNumber"], item])).values()];
 
 let clients = Array.from({length: 10}, () => {
-  const company = companies[getRandomValue(0, companies.length)];
+  const company = companies[getRandomValue(0, companies.length - 1)];
   return {
-    id: `CL-${getRandomValue(0, 99999)}`,
+    id: `CL-${getRandomValue(100, 99999)}`,
     companyName: company.name,
     goods: getRandomGoods(),
     location: `${company.location.latitude}, ${company.location.longitude}`,
@@ -81,9 +81,9 @@ clients = [...new Map(clients.map(item =>
   [item["id"], item])).values()];
 
 let distributionCenters: DistributionCenter[] = Array.from({length: 5}, () => {
-  const location = locations[getRandomValue(0, locations.length)];
+  const location = locations[getRandomValue(0, locations.length - 1)];
   return {
-    id: `DC-${getRandomValue(0, 999)}`,
+    id: `DC-${getRandomValue(100, 999)}`,
     name: location.name,
     goods: getRandomGoods(),
     location: `${location.location.latitude}, ${location.location.longitude}`

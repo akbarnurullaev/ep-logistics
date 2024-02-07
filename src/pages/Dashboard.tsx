@@ -5,10 +5,12 @@ import {useI18n} from "../logic/i18n.ts";
 import {nextDayOrders, useOrdersStore} from "../logic/orders.ts";
 import {useStaticDataStore} from "../logic/static-data.ts";
 import Map, {Marker} from "react-map-gl";
-import {locations} from "../logic/data.ts";
-import Pin from "../components/Pin.tsx";
+import {companies, locations} from "../logic/data.ts";
 import {useMemo} from "react";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import FactoryOutlinedIcon from "@mui/icons-material/FactoryOutlined";
 import "mapbox-gl/dist/mapbox-gl.css";
+
 
 const MAPBOX_TOKEN = "pk.eyJ1IjoiYWtiYXJudXJ1bGxhZXYiLCJhIjoiY2t3a3VtOGduMG10dDJvbXQzcjBrZmRzNyJ9.gz3l4q0pT_ASh-1zb8WGfg";
 
@@ -35,7 +37,22 @@ export const Dashboard = () => {
           latitude={location.latitude}
           anchor="bottom"
         >
-          <Pin />
+          <FactoryOutlinedIcon sx={{ color: "#d00" }} />
+        </Marker>
+      )),
+    []
+  );
+
+  const truckPins = useMemo(
+    () =>
+      companies.map(({location}, index) => (
+        <Marker
+          key={`marker-${index}`}
+          longitude={location.longitude}
+          latitude={location.latitude}
+          anchor="bottom"
+        >
+          <LocalShippingIcon />
         </Marker>
       )),
     []
@@ -70,6 +87,7 @@ export const Dashboard = () => {
         mapStyle="mapbox://styles/mapbox/streets-v9"
       >
         {pins}
+        {truckPins}
       </Map>
     </Box>
   );
