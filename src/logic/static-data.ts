@@ -144,7 +144,7 @@ export const useStaticDataStore = create<State>((set) => ({
     });
   },
   resetTruckDeliveries: () => set(state => {
-    const removedDeliveriesTrucks = state.trucks.map((truck) => ({...truck, delivery1: undefined, delivery2: undefined, delivery3: undefined, delivery4: undefined}));
+    const removedDeliveriesTrucks = state.trucks.map((truck) => ({...truck, delivery1: undefined, delivery2: undefined, delivery3: undefined, delivery4: undefined, items: []}));
     return {
       trucks: removedDeliveriesTrucks
     };

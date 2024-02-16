@@ -270,7 +270,7 @@ const dictionary: Record<Languages, Translations> = {
     travelToDC: "Cestování do DC",
     pricePerKm: "Cena za kilometr",
     profit: "Zisk",
-    projectPrice: "Cena na doručení",
+    projectPrice: "Cena doručení",
     projectExpenses: "Náklady na doručení",
     tallPrice: "Vysoká cena",
     pricePerMinute: "Cena za minutu",
