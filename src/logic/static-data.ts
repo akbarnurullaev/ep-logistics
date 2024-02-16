@@ -2,7 +2,12 @@ import {create} from "zustand";
 import {getRandomValue} from "../helpers/utils.ts";
 import {names, Order, products} from "./orders.ts";
 import {companies, getDistanceMatrix, locations, truckCodes} from "./data.ts";
+import {ExtendedItemDefinition} from "../pages/Planning.tsx";
 
+export type Shift = {
+    start: Date,
+    end: Date,
+}
 export interface Truck {
     registrationNumber: string
     driverName: string
@@ -10,10 +15,14 @@ export interface Truck {
     types: string
     allocatedDepot: string
     location: string
+    items: ExtendedItemDefinition[]
+    shift?: Shift
     delivery1?: string
     delivery2?: string
     delivery3?: string
     delivery4?: string
+    projectPrice?: number
+    projectExpenses?: number
 }
 
 export interface DistributionCenter {
@@ -40,7 +49,7 @@ type State = {
     deleteClient: (client: Client) => void
 
     addTruck: (truck: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4">) => void
-    updateTruck: (truck: Truck) => void
+    updateTruck: (truck: Partial<Omit<Truck, "registrationNumber">> & Pick<Truck, "registrationNumber">) => void
     deleteTruck: (truck: Truck) => void
     setOrderToTruckDelivery: (truck: Truck, order: Order, index: 1|2|3|4) => void
     resetTruckDeliveries: () => void
@@ -63,6 +72,8 @@ let trucks: Truck[] = Array.from({length: 10}, () => {
     types: getRandomGoods(),
     allocatedDepot: company.name,
     location: `${company.location.latitude}, ${company.location.longitude}`,
+    projectPrice: Math.floor(getRandomValue(2000, 15000)/100) * 100,
+    items: []
   };
 });
 trucks = [...new Map(trucks.map(item =>

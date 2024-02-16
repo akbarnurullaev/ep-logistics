@@ -35,9 +35,18 @@ dependencies:
   '@types/mapbox-gl':
     specifier: ^2.7.20
     version: 2.7.20
+  '@types/react-calendar-timeline':
+    specifier: ^0.28.6
+    version: 0.28.6
   axios:
     specifier: ^1.4.0
     version: 1.6.5
+  date-fns:
+    specifier: ^3.3.1
+    version: 3.3.1
+  dnd-timeline:
+    specifier: ^1.5.0
+    version: 1.5.0(react-dom@18.2.0)(react@18.2.0)
   export-from-json:
     specifier: ^1.7.4
     version: 1.7.4
@@ -50,9 +59,15 @@ dependencies:
   mapbox-gl:
     specifier: ^3.1.2
     version: 3.1.2
+  moment:
+    specifier: ^2.30.1
+    version: 2.30.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
+  react-calendar-timeline:
+    specifier: ^0.28.0
+    version: 0.28.0(interactjs@1.10.26)(moment@2.30.1)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
   react-dnd:
     specifier: ^16.0.1
     version: 16.0.1(@types/react@18.2.48)(react@18.2.0)
@@ -1447,6 +1462,37 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@dnd-kit/accessibility@3.1.0(react@18.2.0):
+    resolution: {integrity: sha512-ea7IkhKvlJUv9iSHJOnxinBcoOI3ppGnnL+VDJ75O45Nss6HtZd8IdN8touXPDtASfeI2T2LImb8VOZcL47wjQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      tslib: 2.6.2
+    dev: false
+
+  /@dnd-kit/core@6.1.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-J3cQBClB4TVxwGo3KEjssGEXNJqGVWx17aRTZ1ob0FliR5IjYgTxl5YJbKTzA6IzrtelotH19v6y7uoIRUZPSg==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@dnd-kit/accessibility': 3.1.0(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.2(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.6.2
+    dev: false
+
+  /@dnd-kit/utilities@3.2.2(react@18.2.0):
+    resolution: {integrity: sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      tslib: 2.6.2
+    dev: false
+
   /@emotion/babel-plugin@11.11.0:
     resolution: {integrity: sha512-m4HEDZleaaCH+XgDDsPF15Ht6wTLsgDTeR3WYj9Q/k76JtWhrJjcP4+/XlG8LGT/Rol9qUfOIztXeA84ATpqPQ==}
     dependencies:
@@ -1859,6 +1905,10 @@ packages:
   /@humanwhocodes/object-schema@2.0.2:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
     dev: true
+
+  /@interactjs/types@1.10.26:
+    resolution: {integrity: sha512-DekYpdkMV3XJVd/0k3f4pJluZAsCiG86yEtVXvGLK0lS/Fj0+OzYEv7HoMpcBZSkQ8s7//yaeEBgnxy2tV81lA==}
+    dev: false
 
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
@@ -2396,6 +2446,13 @@ packages:
   /@types/prop-types@15.7.11:
     resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
 
+  /@types/react-calendar-timeline@0.28.6:
+    resolution: {integrity: sha512-43ttmxoxfi9IdMBjU+My8Aa5ArX0fq2DCOJSol6Bt/fbRKHS/fEmIP/GGeXYavpt+vmCjeToHHLPTw/EXqqAFQ==}
+    dependencies:
+      '@types/react': 18.2.48
+      moment: 2.30.1
+    dev: false
+
   /@types/react-dom@18.2.18:
     resolution: {integrity: sha512-TJxDm6OfAX2KJWJdMEVTwWke5Sc/E/RlnPGvGfS0W7+6ocy2xhDVQVh/KvC2Uf7kACs+gDytdusDSdWfWkaNzw==}
     dependencies:
@@ -2768,6 +2825,10 @@ packages:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
 
+  /batch-processor@1.0.0:
+    resolution: {integrity: sha512-xoLQD8gmmR32MeuBHgH0Tzd5PuSZx71ZsbhVxOCRbgktZEPe4SQy7s9Z50uPp0F/f7iw2XmkHN2xkgbMfckMDA==}
+    dev: false
+
   /brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
     dependencies:
@@ -2901,6 +2962,10 @@ packages:
     resolution: {integrity: sha512-02T332h1/HTN6cDSufLP8x4JzDs2+VC+8qZ/N0kWIVPyc2xUkWwWh3B2fJxR7raXkL4Mq7k554mfuM9ofv/vGg==}
     dev: false
 
+  /classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+    dev: false
+
   /clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
@@ -2988,6 +3053,18 @@ packages:
     resolution: {integrity: sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==}
     engines: {node: '>=0.8'}
     hasBin: true
+    dev: false
+
+  /create-react-context@0.3.0(prop-types@15.8.1)(react@18.2.0):
+    resolution: {integrity: sha512-dNldIoSuNSvlTJ7slIKC/ZFGKexBMBrrcc+TTe1NdmROnaASuLPvqpwj9v4XS4uXZ8+YPu0sNmShX2rXI5LNsw==}
+    peerDependencies:
+      prop-types: ^15.0.0
+      react: ^0.14.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      gud: 1.0.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      warning: 4.0.3
     dev: false
 
   /cross-spawn@7.0.3:
@@ -3087,6 +3164,17 @@ packages:
       d3-array: 3.2.4
     dev: false
 
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.23.8
+    dev: false
+
+  /date-fns@3.3.1:
+    resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
+    dev: false
+
   /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -3145,6 +3233,18 @@ packages:
       redux: 4.2.1
     dev: false
 
+  /dnd-timeline@1.5.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-QzuyQ+KrwPs++I9al1gsTBXmfk15Vds6WBB+/eFIYjNBYjMB66efD1ohl8lD5+LKGNzO4obnF+X4JBF5lowv0g==}
+    dependencies:
+      '@dnd-kit/core': 6.1.0(react-dom@18.2.0)(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.2(react@18.2.0)
+      date-fns: 2.30.0
+      resize-observer-polyfill: 1.5.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
+    dev: false
+
   /doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
@@ -3173,6 +3273,12 @@ packages:
   /electron-to-chromium@1.4.639:
     resolution: {integrity: sha512-CkKf3ZUVZchr+zDpAlNLEEy2NJJ9T64ULWaDgy3THXXlPVPkLu3VOs9Bac44nebVtdwl2geSj6AxTtGDOxoXhg==}
     dev: true
+
+  /element-resize-detector@1.2.4:
+    resolution: {integrity: sha512-Fl5Ftk6WwXE0wqCgNoseKWndjzZlDCwuPTcoVZfCP9R3EHQF8qUtr3YUPNETegRBOKqQKPW3n4kiIWngGi8tKg==}
+    dependencies:
+      batch-processor: 1.0.0
+    dev: false
 
   /error-ex@1.3.2:
     resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
@@ -3766,6 +3872,10 @@ packages:
     resolution: {integrity: sha512-HZRwumpOGUrHyxO5bqKZL0B0GlUpwtCAzZ42sgxUPniu33R1LSFH5yrIcBCHjkctCAh3mtWKcKd9J4vDDdeVHA==}
     dev: false
 
+  /gud@1.0.0:
+    resolution: {integrity: sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==}
+    dev: false
+
   /has-bigints@1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
     dev: true
@@ -3855,6 +3965,12 @@ packages:
     dependencies:
       css-in-js-utils: 3.1.0
       fast-loops: 1.1.3
+    dev: false
+
+  /interactjs@1.10.26:
+    resolution: {integrity: sha512-5gNTNDTfEHp2EifqtWGi5VkD3CMZVJSTGmtK/IsVRd+rkOk3E63iVs5Z+IeD5K1Lr0qZpU2754VHAwf5i+Z9xg==}
+    dependencies:
+      '@interactjs/types': 1.10.26
     dev: false
 
   /internal-slot@1.0.6:
@@ -4180,6 +4296,10 @@ packages:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
     dev: false
 
+  /lodash.isequal@4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    dev: false
+
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
@@ -4243,6 +4363,10 @@ packages:
     resolution: {integrity: sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow==}
     dev: false
 
+  /memoize-one@5.2.1:
+    resolution: {integrity: sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==}
+    dev: false
+
   /memoize-one@6.0.0:
     resolution: {integrity: sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==}
     dev: false
@@ -4287,6 +4411,10 @@ packages:
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
+    dev: false
+
+  /moment@2.30.1:
+    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
     dev: false
 
   /ms@2.1.2:
@@ -4523,6 +4651,27 @@ packages:
 
   /quickselect@2.0.0:
     resolution: {integrity: sha512-RKJ22hX8mHe3Y6wH/N3wCM6BWtjaxIyyUIkpHOvfFnxdI4yD4tBXEBKSbriGujF6jnSVkJrffuo6vxACiSSxIw==}
+    dev: false
+
+  /react-calendar-timeline@0.28.0(interactjs@1.10.26)(moment@2.30.1)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-uy/erjon2oZO6dRtpQri1Sc20w4AOlIOqwjOpD2QNiWZvWt19VzO8pqOFF6BcnkuE63TM1xGfLdMbzSnKBPfeA==}
+    peerDependencies:
+      interactjs: ^1.3.4
+      moment: '*'
+      prop-types: ^15.6.2
+      react: '>=16.3'
+      react-dom: '>=16.3'
+    dependencies:
+      classnames: 2.5.1
+      create-react-context: 0.3.0(prop-types@15.8.1)(react@18.2.0)
+      element-resize-detector: 1.2.4
+      interactjs: 1.10.26
+      lodash.isequal: 4.5.0
+      memoize-one: 5.2.1
+      moment: 2.30.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-clientside-effect@1.2.6(react@18.2.0):
@@ -5482,6 +5631,12 @@ packages:
       '@mapbox/point-geometry': 0.1.0
       '@mapbox/vector-tile': 1.3.1
       pbf: 3.2.1
+    dev: false
+
+  /warning@4.0.3:
+    resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
+    dependencies:
+      loose-envify: 1.4.0
     dev: false
 
   /which-boxed-primitive@1.0.2:

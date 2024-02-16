@@ -119,7 +119,6 @@ export default function Auth() {
             onSubmit={(event: React.FormEvent<SignInFormElement>) => {
               event.preventDefault();
               auth?.setAuthToken("token");
-              console.log("edwed");
               // const formElements = event.currentTarget.elements;
               // const data = {
               //   email: formElements.email.value,

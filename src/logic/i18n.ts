@@ -51,6 +51,15 @@ export type Translations = {
     type: string
     availableTrucks: string
     delivery: string
+    unloading: string
+    loading: string
+    travelToDC: string
+    pricePerKm: string
+    profit: string
+    projectPrice: string
+    projectExpenses: string
+    tallPrice: string
+    pricePerMinute: string
     orderId: string
     orders: string
     name: string
@@ -165,7 +174,16 @@ const dictionary: Record<Languages, Translations> = {
     hours: "hours",
     minutes: "minutes",
     reset: "Reset",
-    automaticPlaning: "Automatic planning"
+    automaticPlaning: "Automatic planning",
+    unloading: "Unloading",
+    loading: "Loading",
+    travelToDC: "Travel to DC",
+    pricePerKm: "Price per km",
+    profit: "Profit",
+    projectPrice: "Delivery price",
+    projectExpenses: "Delivery expenses",
+    tallPrice: "Tall price",
+    pricePerMinute: "Price per minute"
   },
   cz: {
     dashboard: "Dashboard",
@@ -236,6 +254,15 @@ const dictionary: Record<Languages, Translations> = {
     download: "Stáhnout",
     updateOrder: "Aktualizovat objednávku",
     reset: "Zrušit plánování",
-    automaticPlaning: "Automatické plánování"
+    automaticPlaning: "Automatické plánování",
+    unloading: "Vykládka",
+    loading: "Nakládka",
+    travelToDC: "Cestování do DC",
+    pricePerKm: "Cena za kilometr",
+    profit: "Zisk",
+    projectPrice: "Cena na doručení",
+    projectExpenses: "Náklady na doručení",
+    tallPrice: "Vysoká cena",
+    pricePerMinute: "Cena za minutu"
   }
 };
