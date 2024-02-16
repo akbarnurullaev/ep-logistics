@@ -23,6 +23,8 @@ export interface Truck {
     delivery4?: string
     projectPrice?: number
     projectExpenses?: number
+    cursorStart: Date
+    cursorEnd: Date
 }
 
 export interface DistributionCenter {
@@ -64,6 +66,8 @@ const getRandomGoods = () => {
 };
 
 let trucks: Truck[] = Array.from({length: 10}, () => {
+  const cursorStart = new Date(new Date().setHours(getRandomValue(1, 16)));
+  const cursorEnd = new Date(new Date().setHours(cursorStart.getHours() + getRandomValue(8, 10)));
   const company = companies[getRandomValue(0, companies.length)];
   return {
     registrationNumber: truckCodes[getRandomValue(0, truckCodes.length)],
@@ -73,7 +77,9 @@ let trucks: Truck[] = Array.from({length: 10}, () => {
     allocatedDepot: company.name,
     location: `${company.location.latitude}, ${company.location.longitude}`,
     projectPrice: Math.floor(getRandomValue(2000, 15000)/100) * 100,
-    items: []
+    items: [],
+    cursorStart,
+    cursorEnd,
   };
 });
 trucks = [...new Map(trucks.map(item =>

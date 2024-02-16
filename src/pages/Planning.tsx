@@ -457,8 +457,8 @@ export const useItemsTimelineContext = () => {
 };
 export type ExtendedItemDefinition = ItemDefinition & {title: ArrayElement<typeof allOptions>, orderId: string}
 const TimelinePlanning = ({truck}: {truck: Truck}) => {
-  const cursorStart = useRef(new Date(new Date().setHours(getRandomValue(1, 16)))).current;
-  const cursorEnd = useRef(new Date(new Date().setHours(cursorStart.getHours() + getRandomInRange(8, 10)))).current;
+  const cursorStart = useRef(truck.cursorStart).current;
+  const cursorEnd = useRef(truck.cursorEnd).current;
 
   const [open, setOpen] = useState(false);
   const [timeframe, setTimeframe] = useState({
