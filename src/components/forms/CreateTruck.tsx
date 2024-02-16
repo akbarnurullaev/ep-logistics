@@ -42,6 +42,7 @@ export const CreateTruck = () => {
           event.preventDefault();
           const formElements = event.currentTarget.elements;
           const data: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4"> = {
+            cursorEnd: undefined, cursorStart: undefined,
             items: [],
             registrationNumber: formElements.registrationNumber.value,
             driverName: formElements.driverName.value,
