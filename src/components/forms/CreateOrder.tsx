@@ -6,6 +6,8 @@ import Button from "@mui/joy/Button";
 import {useI18n} from "../../logic/i18n.ts";
 import {useCrudForms} from "../../logic/crud-forms.ts";
 import {dateFormatter} from "../../helpers/dateFormatter.ts";
+import {useLocation} from "react-router-dom";
+import Checkbox from "@mui/joy/Checkbox";
 
 interface FormElements extends HTMLFormControlsCollection {
   productType: HTMLInputElement
@@ -22,15 +24,16 @@ export const CreateOrder = () => {
   const {t} = useI18n();
   const {addOrder, updateOrder, removeOrder} = useOrdersStore();
   const {setFormType, selectedData, setSelectedData} = useCrudForms();
-
+  const {pathname} = useLocation();
   const order = selectedData as Order;
   const isEditing = !!selectedData;
-
-
+  const isRequests = pathname === "/requests";
+  const title = isRequests ? t("createNewRequest") : t(isEditing ? "updateOrder" : "createNewOrder");
+  const subtitle = t(isRequests ? "fillInTheInformationOfTheRequest" : "fillInTheInformationOfTheOrder");
   return (
     <>
-      <DialogTitle>{t(isEditing ? "updateOrder" : "createNewOrder")}</DialogTitle>
-      <DialogContent>{t("fillInTheInformationOfTheOrder")}</DialogContent>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>{subtitle}</DialogContent>
       <form
         onSubmit={(event: React.FormEvent<OrderFormElement>) => {
           event.preventDefault();
@@ -56,7 +59,7 @@ export const CreateOrder = () => {
             <Autocomplete
               freeSolo
               name="clientName"
-              defaultValue={order?.clientName}
+              defaultValue={order?.clientName as never}
               options={companies.map((company) => company.name)}
               slotProps={{
                 listbox: {
@@ -73,7 +76,7 @@ export const CreateOrder = () => {
               freeSolo
               required
               name="productType"
-              defaultValue={order?.productType as string}
+              defaultValue={order?.productType as string as never}
               options={products}
               slotProps={{
                 listbox: {
@@ -111,7 +114,11 @@ export const CreateOrder = () => {
             />
           </FormControl>
 
-          <Button type="submit">{t(isEditing ? "updateOrder" : "createNewOrder")}</Button>
+          {isRequests && isEditing && (
+            <Checkbox label={t("approved")} />
+          )}
+
+          <Button type="submit">{t(isEditing ? (isRequests ? "updateRequest" : "updateOrder") : !isRequests ? "createNewOrder" : "createNewRequest")}</Button>
           {isEditing && <Button variant="plain" type="submit" onClick={() => {
             removeOrder(order);
             setFormType(null);

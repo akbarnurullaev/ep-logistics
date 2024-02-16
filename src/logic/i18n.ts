@@ -13,6 +13,9 @@ export type Translations = {
     planning: string
     addNewOrder: string
     createNewOrder: string
+    updateRequest: string
+    approved: string
+    createNewRequest: string
     updateOrder: string
     createNewTruck: string
     createNewClient: string
@@ -22,6 +25,7 @@ export type Translations = {
     updateDistributionCenter: string
     updateTruck: string
     fillInTheInformationOfTheOrder: string
+    fillInTheInformationOfTheRequest: string
     fillInTheInformationOfTheTruck: string
     fillInTheInformationOfTheClient: string
     fillInTheInformationOfTheDistributionCenter: string
@@ -62,6 +66,7 @@ export type Translations = {
     pricePerMinute: string
     orderId: string
     orders: string
+    requests: string
     name: string
     totalActiveOrders: string
     activeOrdersForNextDay: string
@@ -183,7 +188,12 @@ const dictionary: Record<Languages, Translations> = {
     projectPrice: "Delivery price",
     projectExpenses: "Delivery expenses",
     tallPrice: "Tall price",
-    pricePerMinute: "Price per minute"
+    pricePerMinute: "Price per minute",
+    updateRequest: "Update request",
+    approved: "Approved",
+    createNewRequest: "Create new request",
+    fillInTheInformationOfTheRequest: "Fill in the information of the request",
+    requests: "Requests"
   },
   cz: {
     dashboard: "Dashboard",
@@ -263,6 +273,11 @@ const dictionary: Record<Languages, Translations> = {
     projectPrice: "Cena na doručení",
     projectExpenses: "Náklady na doručení",
     tallPrice: "Vysoká cena",
-    pricePerMinute: "Cena za minutu"
+    pricePerMinute: "Cena za minutu",
+    "updateRequest": "Aktualizovat žádost",
+    "approved": "Schváleno",
+    "createNewRequest": "Vytvořit novou žádost",
+    "fillInTheInformationOfTheRequest": "Vyplnit informace o žádosti",
+    "requests": "Žádosti"
   }
 };

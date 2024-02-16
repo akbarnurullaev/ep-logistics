@@ -5,6 +5,7 @@ import Box from "@mui/joy/Box";
 import {CustomDataGrid} from "../components/common/CustomDataGrid.tsx";
 import {Button} from "@mui/material";
 import {useCrudForms} from "../logic/crud-forms.ts";
+import {useLocation} from "react-router-dom";
 
 const fields = [
   {
@@ -97,6 +98,7 @@ export function Orders() {
   const {t} = useI18n();
   const {orders, updateOrders}= useOrdersStore();
   const {setFormType, setSelectedData} =useCrudForms();
+  const {pathname} = useLocation();
   const [showOrdersForTomorrow, setShowOrdersForTomorrow]= useState(false);
 
   const data = showOrdersForTomorrow ? nextDayOrders(orders) : orders;
@@ -113,7 +115,7 @@ export function Orders() {
             {(!showOrdersForTomorrow ? t("ordersForTomorrow") : t("allOrders")).toUpperCase()}
           </Button>
         )}
-        rows={data}
+        rows={data.map((d) => ({...d, id: pathname === "/requests" ? `REQ-${d.id.split("-")[1]}` : d.id}))}
         onRowClick={({row: order}) => {
           setFormType("order");
           setSelectedData(order);

@@ -152,7 +152,7 @@ export default function Sidebar() {
           }}
         >
           {paths.map((path) => (
-            path.children ? <ChildrenPaths key={path.path} path={path}/>
+            path.children ? <ChildrenPaths key={path.path} path={path as never}/>
               : <ListItem key={path.path}>
                 <ListItemButton onClick={() => navigate(path.path)} selected={pathname === path.path}>
                   {path.icon}

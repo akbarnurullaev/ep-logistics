@@ -42,12 +42,13 @@ export const CreateTruck = () => {
           event.preventDefault();
           const formElements = event.currentTarget.elements;
           const data: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4"> = {
+            items: [],
             registrationNumber: formElements.registrationNumber.value,
             driverName: formElements.driverName.value,
             maxLoad: +formElements.maxLoad.value,
             types: formElements.types.value,
             allocatedDepot: formElements.allocatedDepot.value,
-            location: formElements.location.value,
+            location: formElements.location.value
           };
           if (isEditing) {
             updateTruck({...selectedTruck, ...data});
@@ -87,7 +88,7 @@ export const CreateTruck = () => {
             <Autocomplete
               freeSolo
               name="allocatedDepot"
-              defaultValue={selectedTruck?.allocatedDepot}
+              defaultValue={selectedTruck?.allocatedDepot as never}
               options={companies.map((company) => company.name)}
               slotProps={{
                 listbox: {

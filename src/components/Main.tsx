@@ -44,6 +44,7 @@ export const usePaths = () => {
     {path: "/", title: t("dashboard"), icon: <DashboardOutlinedIcon/>, component: <Dashboard/>},
     {path: "/planning", title: t("planning"), icon: <FormatListNumberedOutlinedIcon/>, component: <Planning/>},
     {path: "/orders", title: t("orders"), icon: <AssignmentOutlinedIcon/>, component: <Orders/>},
+    {path: "/requests", title: t("requests"), icon: <AssignmentOutlinedIcon/>, component: <Orders/>},
     {
       path: "/static-data", title: t("staticData"), icon: <DataArrayOutlinedIcon/>,
       children: [
@@ -147,7 +148,7 @@ export function Main() {
               {Buttons[pathname] && <Button sx={{ mr: 2 }} color="primary" variant="solid" size="lg"
                 onClick={() => setFormType(Buttons[pathname].formType)}>{t(Buttons[pathname].title)}</Button>}
               <Button color="primary" variant="solid" size="lg"
-                onClick={() => setFormType("order")}>{t("createNewOrder")}</Button>
+                onClick={() => setFormType("order")}>{pathname ==="/requests" ? t("createNewRequest") : t("createNewOrder")}</Button>
             </Box>
           </Box>
           <Routes>
