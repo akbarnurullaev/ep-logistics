@@ -25,6 +25,8 @@ export interface Truck {
     projectExpenses?: number
     cursorStart: Date
     cursorEnd: Date
+    performanceThisWeek: number
+    performancePreviousWeek: number
 }
 
 export interface DistributionCenter {
@@ -80,6 +82,8 @@ let trucks: Truck[] = Array.from({length: 10}, () => {
     items: [],
     cursorStart,
     cursorEnd,
+    performanceThisWeek: getRandomValue(20000, 600000),
+    performancePreviousWeek: getRandomValue(20000, 600000),
   };
 });
 trucks = [...new Map(trucks.map(item =>

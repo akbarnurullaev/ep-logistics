@@ -87,6 +87,10 @@ export interface Order {
     clientName: string
     deliveryDate: string
     deliveryTime: string
+    travelToDC?: number
+    loading?: number
+    delivery?: number
+    unloading?: number
 }
 
 type State = {
@@ -116,7 +120,12 @@ let orders = Array.from({length: 50}, () => ({
   volume: getRandomValue(2, 20),
   clientName: clientNames[getRandomValue(0, clientNames.length)],
   deliveryDate: dateFormatter(getRandomDate()),
-  deliveryTime: `${String(getRandomValue(0, 24)).padStart(2, "0")}:00`
+  deliveryTime: `${String(getRandomValue(0, 24)).padStart(2, "0")}:00`,
+  travelToDC: getRandomValue(1, 8),
+  loading: getRandomValue(1, 8),
+  delivery: getRandomValue(1, 8),
+  unloading: getRandomValue(1, 8)
+
 }));
 orders = [...new Map(orders.map(item =>
   [item["id"], item])).values()];

@@ -114,6 +114,23 @@ export const CreateOrder = () => {
             />
           </FormControl>
 
+          {/*<FormControl>*/}
+          {/*  <FormLabel>{t("travelToDC")}</FormLabel>*/}
+          {/*  <Input name="travelToDC" type="number" slotProps={{ input: {min: 0} }} defaultValue={order?.travelToDC} required />*/}
+          {/*</FormControl>*/}
+          {/*<FormControl>*/}
+          {/*  <FormLabel>{t("loading")}</FormLabel>*/}
+          {/*  <Input name="loading" type="number" slotProps={{ input: {min: 0} }} defaultValue={order?.loading} required />*/}
+          {/*</FormControl>*/}
+          {/*<FormControl>*/}
+          {/*  <FormLabel>{t("delivery")}</FormLabel>*/}
+          {/*  <Input name="delivery" type="number" slotProps={{ input: {min: 0} }} defaultValue={order?.delivery} required />*/}
+          {/*</FormControl>*/}
+          {/*<FormControl>*/}
+          {/*  <FormLabel>{t("unloading")}</FormLabel>*/}
+          {/*  <Input name="unloading" type="number" slotProps={{ input: {min: 0} }} defaultValue={order?.unloading} required />*/}
+          {/*</FormControl>*/}
+
           {isRequests && isEditing && (
             <Checkbox label={t("approved")} />
           )}

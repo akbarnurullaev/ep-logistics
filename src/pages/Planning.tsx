@@ -21,7 +21,16 @@ import {
   useRow,
   useTimelineContext
 } from "dnd-timeline";
-import {addHours, addMinutes, format, hoursToMilliseconds, millisecondsToMinutes} from "date-fns";
+import {
+  addDays,
+  addHours,
+  addMilliseconds,
+  addMinutes,
+  differenceInMilliseconds,
+  format,
+  hoursToMilliseconds,
+  millisecondsToMinutes
+} from "date-fns";
 import {CustomDataGrid} from "../components/common/CustomDataGrid.tsx";
 import {Button} from "@mui/material";
 import {
@@ -41,14 +50,16 @@ import TimeCursor from "../components/TimeCursor.tsx";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const groups = [{ id: 1, title: "group 1" }, { id: 2, title: "group 2" }];
-const generateItem = ({newItems, option, shift, orderId, index}: {option: ArrayElement<typeof allOptions>, newItems: ExtendedItemDefinition[], shift: Shift, orderId: string, index: number}) => {
+const generateItem = ({newItems, option, shift, orderId, index}: {option: ArrayElement<typeof allOptions>, newItems: ExtendedItemDefinition[], shift: Shift, orderId: string, index: number}, isBigOrder?: boolean) => {
   const lastItem = newItems[index - 1];
 
-  const length = (option === "Loading" || option === "Unloading") ? 40 : getRandomInRange(60, 100);
+  const length = isBigOrder ?
+    (option === "Loading" || option === "Unloading") ? 60 : option === "Delivery" ? getRandomInRange(420, 480) : getRandomInRange(60, 100) :
+    (option === "Loading" || option === "Unloading") ? 60 : getRandomInRange(60, 120);
 
-  const start = addMinutes(new Date(lastItem ? lastItem.relevance.end : shift.start), 5);
-  const end = addMinutes(new Date(start), length);
-  console.log(lastItem?.relevance?.end, start);
+  const start = isBigOrder && index === 3 && option === "Delivery" ? addDays(shift.start, 1) :  addMinutes(new Date(lastItem ? lastItem.relevance.end : shift.start), 5);
+  const end = isBigOrder && index === 3 && option === "Delivery" ? addMinutes(addDays(shift.start, 1), getRandomInRange(30, 120)) : (isBigOrder && option === "Delivery" && index !== 3) ? addMinutes(shift.end, -5) : addMinutes(new Date(start), length);
+
   return {
     id: index.toString(),
     relevance: {
@@ -75,6 +86,7 @@ export const Planning = () => {
   const plan = async () => {
     for (let i = 0; i < trucks.length; i++) {
       const truck = trucks[i];
+      const isBigOrder = Math.random() < 0.5;
 
       if (!truck.items.length) {
         const {items, registrationNumber, shift} = truck;
@@ -83,23 +95,63 @@ export const Planning = () => {
         // const hasSecondOrder = Math.random() < 0.5;
         const orderId1 = `ORD-${getRandomValue(0, 99999)}`;
         const orderId2 = `ORD-${getRandomValue(0, 99999)}`;
-        const options = [...allOptions, ...allOptions];
+        // const options = [...allOptions, ...allOptions];
+        const options = isBigOrder ? ["Travel to DC", "Loading", "Delivery", "Delivery", "Unloading"] : [...allOptions];
 
         for (let i = 0; i < options.length; i++) {
           const option = options[i];
           const isSecondOrder = i > 3;
 
           if (shift) {
-            newItems.push(generateItem({option, newItems, shift, orderId: isSecondOrder ? orderId2 : orderId1, index: i}));
+            newItems.push(generateItem({option, newItems, shift, orderId: isSecondOrder ? orderId2 : orderId1, index: i}, isBigOrder));
           }
         }
+
+        const getNewItem = (item: ExtendedItemDefinition) => {
+          const distance = differenceInMilliseconds(item.relevance.end, item.relevance.start);
+          return {...item, relevance: {start: addDays(shift.start, 1), end: addMilliseconds(addDays(shift.start, 1), distance)}};
+        };
+        const copiedNewItems = [];
+        const e = newItems.map((item, index) => {
+          if (item.relevance.end > shift.end) {
+            const prevItem = copiedNewItems[index - 1];
+            console.log(prevItem);
+            if (prevItem) {
+              const distance = differenceInMilliseconds(item.relevance.end, item.relevance.start);
+              const newItem = {...item, relevance: {start: addMinutes(prevItem.relevance.end, 5), end: addMilliseconds(addMinutes(prevItem.relevance.end, 5), distance)}};
+
+              copiedNewItems.push(newItem);
+              return newItem;
+            }
+
+            copiedNewItems.push(getNewItem(item));
+            return getNewItem(item);
+            // if (prevItem.relevance.end < shift.end) {
+            // }
+
+            // const prevUpdatedItem = getNewItem(prevItem);
+            //
+            // const distance = differenceInMilliseconds(item.relevance.end, item.relevance.start);
+
+            // if (newItems[index - 1].relevance.end > shift.end) {
+            //   const prevItem = getNewItem(newItems[index - 1]);
+            //   const distance = differenceInMilliseconds(item.relevance.end, item.relevance.start);
+            //   return {...item, relevance: {start: addMinutes(prevItem.relevance.end, 5), end: addMilliseconds(addMinutes(prevItem.relevance.end, 5), distance)}};
+            // }
+          } else {
+            copiedNewItems.push(undefined);
+            return item;
+          }
+        });
+        console.log(e);
         const hasSecondOrder = !(shift && (newItems[newItems.length - 1]?.relevance?.end > shift.end));
-        const plannedItems = hasSecondOrder ? newItems : newItems.slice(0, 4);
+        const plannedItems = e;
+        // const plannedItems = hasSecondOrder ? newItems : newItems.slice(0, 4);
 
         const itemsToPush = [];
 
         for (const item of plannedItems) {
-          await sleep(300);
+          await sleep(100);
 
           itemsToPush.push(item);
           updateTruck({registrationNumber, items: itemsToPush});
@@ -224,6 +276,27 @@ export const Planning = () => {
                   </Box>
                 );
               },
+            },
+            {headerName: "This week", field: "performanceThisWeek", valueGetter: ({row}) => row.performanceThisWeek + " Kč", width: 120},
+            {headerName: "Previous week", field: "performancePreviousWeek", valueGetter: ({row}) => row.performancePreviousWeek + " Kč", width: 120},
+            {
+              headerName: "Tendency",
+              field: "tendency",
+              renderCell: ({row}) => {
+                const profit = Number(row.performancePreviousWeek) - Number(row.performanceThisWeek);
+                const isPositive = profit < 0;
+                const backgroundColor = isPositive ? "#c6efcf" : "#ffc7cd";
+                const color = isPositive ? "#006200" : "#9b0005";
+
+                const differencePercentage = Math.round(Math.abs(profit)/(row.performancePreviousWeek/100));
+
+                return (
+                  <Box sx={{ backgroundColor, color, width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {isPositive ? "+" : "-"}{differencePercentage}%
+                  </Box>
+                );
+              },
+              width: 120 // calcuate the percentage difference also add profit
             },
             // {headerName: "Total expenses", field: "totalExpenses", renderCell: totalExpenses, width: 80},
             // {headerName: `${t("delivery")} 1`, field: "delivery1", renderCell: ({row}) => <DeliveryRow truck={row} index={1}/>, flex: 1.5},
@@ -459,6 +532,8 @@ export type ExtendedItemDefinition = ItemDefinition & {title: ArrayElement<typeo
 const TimelinePlanning = ({truck}: {truck: Truck}) => {
   const cursorStart = useRef(truck.cursorStart).current;
   const cursorEnd = useRef(truck.cursorEnd).current;
+  const tomorrowCursorStart = addDays(cursorStart, 1);
+  const tomorrowCursorEnd = addDays(cursorEnd, 1);
 
   const [open, setOpen] = useState(false);
   const [timeframe, setTimeframe] = useState({
@@ -484,6 +559,9 @@ const TimelinePlanning = ({truck}: {truck: Truck}) => {
     }
   }, [truck]);
 
+  const isOutOfTimeline = (date: Date) => {
+    return (date > cursorEnd && date < tomorrowCursorStart) || date > tomorrowCursorEnd || date < cursorStart;
+  };
 
   const onResizeEnd = useCallback(
     (event: ResizeEndEvent) => {
@@ -508,7 +586,7 @@ const TimelinePlanning = ({truck}: {truck: Truck}) => {
           }
         }
 
-        if (updatedRelevance.start < cursorStart || updatedRelevance.end > cursorEnd) {
+        if (isOutOfTimeline(updatedRelevance.start) || isOutOfTimeline(updatedRelevance.end)) {
           return items;
         }
 
@@ -547,7 +625,10 @@ const TimelinePlanning = ({truck}: {truck: Truck}) => {
           }
         }
 
-        if (updatedRelevance.start < cursorStart || updatedRelevance.end > cursorEnd) {
+        // if (updatedRelevance.start < cursorStart || updatedRelevance.end > cursorEnd) {
+        //   return items;
+        // }
+        if (isOutOfTimeline(updatedRelevance.start) || isOutOfTimeline(updatedRelevance.end)) {
           return items;
         }
 
@@ -580,6 +661,8 @@ const TimelinePlanning = ({truck}: {truck: Truck}) => {
     shift: {
       start: cursorStart,
       end: cursorEnd,
+      tomorrowStart: tomorrowCursorStart,
+      tomorrowEnd: tomorrowCursorEnd,
     }
   };
 
@@ -700,7 +783,7 @@ function Timeline() {
       }
     },
   }));
-
+  // TODO: minutes instead of hours
 
   const groupedSubrows = useMemo(
     () => groupItemsToSubrows(items, timeframe),
@@ -717,6 +800,8 @@ function Timeline() {
         <TimeAxis markers={timeAxisMarkers}/>
         <TimeCursor position={shift.start} />
         <TimeCursor position={shift.end} />
+        <TimeCursor position={addDays(shift.start, 1)} />
+        <TimeCursor position={addDays(shift.end, 1)} />
 
         <Row id="0" sidebar={<></>}>
           {groupedSubrows[0]?.map((subrow, index) => (
