@@ -2,7 +2,7 @@ import {Shift, Truck, useStaticDataStore} from "../logic/static-data.ts";
 import Typography from "@mui/joy/Typography";
 import {nextDayOrders, Order, useOrdersStore} from "../logic/orders.ts";
 import {useDrag, useDrop} from "react-dnd";
-import {Modal, ModalDialog, Snackbar, Tooltip, useTheme} from "@mui/joy";
+import {Modal, ModalDialog, Snackbar, Tooltip} from "@mui/joy";
 import {useI18n} from "../logic/i18n.ts";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/joy/Box";
@@ -48,9 +48,9 @@ import {allOptions, CreateItem} from "../components/forms/CreateItem.tsx";
 import TimeCursor from "../components/TimeCursor.tsx";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-const options = [...allOptions, "Delivery"];
-const groups = [{ id: 1, title: "group 1" }, { id: 2, title: "group 2" }];
-const generateItem = ({newItems, option, shift, orderId, index}: {option: ArrayElement<typeof options>, newItems: ExtendedItemDefinition[], shift: Shift, orderId: string, index: number}, isBigOrder?: boolean) => {
+
+// const groups = [{ id: 1, title: "group 1" }, { id: 2, title: "group 2" }];
+const generateItem = ({newItems, option, shift, orderId, index}: {option: ArrayElement<typeof allOptions>, newItems: ExtendedItemDefinition[], shift: Shift, orderId: string, index: number}, isBigOrder?: boolean) => {
   const lastItem = newItems[index - 1];
 
   const length = isBigOrder ?
@@ -78,7 +78,7 @@ export const tallPrice = 20;
 
 export const Planning = () => {
   const {t} = useI18n();
-  const {trucks, setOrderToTruckDelivery, resetTruckDeliveries, updateTruck,} = useStaticDataStore();
+  const {trucks, resetTruckDeliveries, updateTruck,} = useStaticDataStore();
   const {orders: allOrders, removeOrder, resetOrders} = useOrdersStore();
 
   const orders = nextDayOrders(allOrders);
@@ -103,6 +103,7 @@ export const Planning = () => {
           const isSecondOrder = i > 3;
 
           if (shift) {
+            // @ts-ignore
             newItems.push(generateItem({option, newItems, shift, orderId: isSecondOrder ? orderId2 : orderId1, index: i}, isBigOrder));
           }
         }
@@ -351,53 +352,53 @@ const OrderIdDnD = ({row}: {row: Order}) => {
   );
 };
 
-const DeliveryRow = ({truck, index}:{truck: Truck, index: 1|2|3|4}) => {
-  const theme = useTheme();
-  const {setOrderToTruckDelivery} = useStaticDataStore();
-  const {removeOrder} = useOrdersStore();
+// const DeliveryRow = ({truck, index}:{truck: Truck, index: 1|2|3|4}) => {
+//   const theme = useTheme();
+//   const {setOrderToTruckDelivery} = useStaticDataStore();
+//   const {removeOrder} = useOrdersStore();
+//
+//   const [{isOver}, drop] = useDrop(() => ({
+//     accept: "BOX",
+//     collect: (monitor) => ({
+//       isOver: monitor.isOver(),
+//       canDrop: monitor.canDrop()
+//     }),
+//     drop: (order: Order) => {
+//       setOrderToTruckDelivery(truck, order, index);
+//       removeOrder(order);
+//     },
+//   }));
+//
+//   const deliveryOrderInfo = truck[`delivery${index}`];
+//
+//   return (
+//     <Box
+//       ref={drop}
+//       role="Dustbin"
+//       style={{ background: isOver ? theme.palette.background.level3 : "" }}
+//       sx={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+//       <Typography
+//         fontSize={12}
+//         sx={{
+//           whiteSpace: "wrap",
+//           overflow: "hidden",
+//           textOverflow: "balance"
+//         }}
+//       >
+//         {deliveryOrderInfo}
+//       </Typography>
+//     </Box>
+//   );
+// };
 
-  const [{isOver}, drop] = useDrop(() => ({
-    accept: "BOX",
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop()
-    }),
-    drop: (order: Order) => {
-      setOrderToTruckDelivery(truck, order, index);
-      removeOrder(order);
-    },
-  }));
+// const now = new Date().getTime();
+// const startOfDay = new Date(now - (now % 86400000));
+// const endDate = new Date(now - (now % 86400000) + 86400000);
 
-  const deliveryOrderInfo = truck[`delivery${index}`];
-
-  return (
-    <Box
-      ref={drop}
-      role="Dustbin"
-      style={{ background: isOver ? theme.palette.background.level3 : "" }}
-      sx={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <Typography
-        fontSize={12}
-        sx={{
-          whiteSpace: "wrap",
-          overflow: "hidden",
-          textOverflow: "balance"
-        }}
-      >
-        {deliveryOrderInfo}
-      </Typography>
-    </Box>
-  );
-};
-
-const now = new Date().getTime();
-const startOfDay = new Date(now - (now % 86400000));
-const endDate = new Date(now - (now % 86400000) + 86400000);
-
-const DEFAULT_TIMEFRAME: Timeframe = {
-  start: startOfDay,
-  end: endDate,
-};
+// const DEFAULT_TIMEFRAME: Timeframe = {
+//   start: startOfDay,
+//   end: endDate,
+// };
 
 export const generateRows = (count: number, options) => {
   return Array(count)
@@ -446,12 +447,12 @@ export const generateRandomRelevance = (
   };
 };
 
-interface GenerateItemsOptions {
-  disabled?: boolean;
-  background?: boolean;
-  minDuration?: number;
-  maxDuration?: number;
-}
+// interface GenerateItemsOptions {
+//   disabled?: boolean;
+//   background?: boolean;
+//   minDuration?: number;
+//   maxDuration?: number;
+// }
 
 type ItemsContext = {
   items: ExtendedItemDefinition[];
@@ -649,9 +650,9 @@ const TimelinePlanning = ({truck}: {truck: Truck}) => {
     setItems([...items, item]);
   };
 
-  const showItemForm = () => {
-    setOpen(true);
-  };
+  // const showItemForm = () => {
+  //   setOpen(true);
+  // };
 
   const value = {
     items,
@@ -828,17 +829,17 @@ function Timeline() {
   );
 }
 
-interface SidebarProps {
-  row: RowDefinition;
-}
+// interface SidebarProps {
+//   row: RowDefinition;
+// }
 
-function Sidebar(props: SidebarProps) {
-  return (
-    <div
-      style={{ width: 200, border: "1px solid grey" }}
-    >{`Row ${props.row.id}`}</div>
-  );
-}
+// function Sidebar(props: SidebarProps) {
+//   return (
+//     <div
+//       style={{ width: 200, border: "1px solid grey" }}
+//     >{`Row ${props.row.id}`}</div>
+//   );
+// }
 
 interface RowProps extends RowDefinition {
   children: React.ReactNode;
