@@ -5,6 +5,7 @@ import Button from "@mui/joy/Button";
 import {useI18n} from "../../logic/i18n.ts";
 import {useCrudForms} from "../../logic/crud-forms.ts";
 import {Truck, useStaticDataStore} from "../../logic/static-data.ts";
+import {getRandomValue} from "../../helpers/utils.ts";
 
 interface FormElements extends HTMLFormControlsCollection {
     registrationNumber: HTMLInputElement
@@ -42,6 +43,8 @@ export const CreateTruck = () => {
           event.preventDefault();
           const formElements = event.currentTarget.elements;
           const data: Omit<Truck, "delivery1" | "delivery2" | "delivery3" | "delivery4"> = {
+            performanceThisWeek: getRandomValue(20000, 600000),
+            performancePreviousWeek: getRandomValue(20000, 600000),
             cursorEnd: undefined, cursorStart: undefined,
             items: [],
             registrationNumber: formElements.registrationNumber.value,

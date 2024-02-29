@@ -48,9 +48,9 @@ import {allOptions, CreateItem} from "../components/forms/CreateItem.tsx";
 import TimeCursor from "../components/TimeCursor.tsx";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
+const options = [...allOptions, "Delivery"];
 const groups = [{ id: 1, title: "group 1" }, { id: 2, title: "group 2" }];
-const generateItem = ({newItems, option, shift, orderId, index}: {option: ArrayElement<typeof allOptions>, newItems: ExtendedItemDefinition[], shift: Shift, orderId: string, index: number}, isBigOrder?: boolean) => {
+const generateItem = ({newItems, option, shift, orderId, index}: {option: ArrayElement<typeof options>, newItems: ExtendedItemDefinition[], shift: Shift, orderId: string, index: number}, isBigOrder?: boolean) => {
   const lastItem = newItems[index - 1];
 
   const length = isBigOrder ?
