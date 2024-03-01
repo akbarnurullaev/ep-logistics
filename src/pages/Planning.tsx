@@ -280,8 +280,8 @@ export const Planning = () => {
                 );
               },
             },
-            {headerName: t("performanceThisWeek"), field: "performanceThisWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performanceThisWeek) + " Kč", width: 120},
-            {headerName: t("performancePreviousWeek"), field: "performancePreviousWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performancePreviousWeek + Number(row.projectPrice) - Number(row.projectExpenses)) + " Kč", width: 120},
+            {headerName: t("performanceThisWeek"), field: "performanceThisWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performanceThisWeek + Number(row.projectPrice) - Number(row.projectExpenses)) + " Kč", width: 120},
+            {headerName: t("performancePreviousWeek"), field: "performancePreviousWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performancePreviousWeek) + " Kč", width: 120},
             {
               headerName: t("tendency"),
               field: "tendency",
