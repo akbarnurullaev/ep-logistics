@@ -273,15 +273,17 @@ export const Planning = () => {
                 const color = isPositive ? "#006200" : "#9b0005";
                 return (
                   <Box sx={{ backgroundColor, color, width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    {profit} Kč
+                    {new Intl.NumberFormat("ja-JP").format(
+                      profit,
+                    )} Kč
                   </Box>
                 );
               },
             },
-            {headerName: "This week", field: "performanceThisWeek", valueGetter: ({row}) => row.performanceThisWeek + " Kč", width: 120},
-            {headerName: "Previous week", field: "performancePreviousWeek", valueGetter: ({row}) => row.performancePreviousWeek + " Kč", width: 120},
+            {headerName: t("performanceThisWeek"), field: "performanceThisWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performanceThisWeek) + " Kč", width: 120},
+            {headerName: t("performancePreviousWeek"), field: "performancePreviousWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performancePreviousWeek) + " Kč", width: 120},
             {
-              headerName: "Tendency",
+              headerName: t("tendency"),
               field: "tendency",
               renderCell: ({row}) => {
                 const profit = Number(row.performancePreviousWeek) - Number(row.performanceThisWeek);

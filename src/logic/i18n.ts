@@ -90,6 +90,9 @@ export type Translations = {
     hours: string
     minutes: string
     download: string
+    tendency: string
+    performanceThisWeek: string
+    performancePreviousWeek: string
 }
 
 const useI18nStore = create<State>((set) => ({
@@ -193,7 +196,10 @@ const dictionary: Record<Languages, Translations> = {
     approved: "Approved",
     createNewRequest: "Create new request",
     fillInTheInformationOfTheRequest: "Fill in the information of the request",
-    requests: "Requests"
+    requests: "Requests",
+    tendency: "Tendency",
+    performanceThisWeek: "Profit this week",
+    performancePreviousWeek: "Profit last week"
   },
   cz: {
     dashboard: "Dashboard",
@@ -278,6 +284,9 @@ const dictionary: Record<Languages, Translations> = {
     "approved": "Schváleno",
     "createNewRequest": "Vytvořit novou žádost",
     "fillInTheInformationOfTheRequest": "Vyplnit informace o žádosti",
-    "requests": "Žádosti"
+    "requests": "Žádosti",
+    tendency: "Tendence",
+    performanceThisWeek: "Zisk tento týden",
+    performancePreviousWeek: "Zisk minulý týden"
   }
 };
