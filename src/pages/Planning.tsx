@@ -281,12 +281,12 @@ export const Planning = () => {
               },
             },
             {headerName: t("performanceThisWeek"), field: "performanceThisWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performanceThisWeek) + " Kč", width: 120},
-            {headerName: t("performancePreviousWeek"), field: "performancePreviousWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performancePreviousWeek) + " Kč", width: 120},
+            {headerName: t("performancePreviousWeek"), field: "performancePreviousWeek", valueGetter: ({row}) => new Intl.NumberFormat("ja-JP").format(row.performancePreviousWeek + Number(row.projectPrice) - Number(row.projectExpenses)) + " Kč", width: 120},
             {
               headerName: t("tendency"),
               field: "tendency",
               renderCell: ({row}) => {
-                const profit = Number(row.performancePreviousWeek) - Number(row.performanceThisWeek);
+                const profit = Number(row.performancePreviousWeek) - Number(row.performanceThisWeek + Number(row.projectPrice) - Number(row.projectExpenses));
                 const isPositive = profit < 0;
                 const backgroundColor = isPositive ? "#c6efcf" : "#ffc7cd";
                 const color = isPositive ? "#006200" : "#9b0005";
